@@ -2,6 +2,33 @@
 
 本文件只追加，不修改历史记录。
 
+## [0.1.0] —2026-11-13（工程化交付：Git / CI / Docker / Release）
+
+###变更类型：仓库初始化 + 发布流水线 + 容器化部署（无业务功能变更）
+
+> 依据通用执行指令补齐工程化基线：初始化 Git 仓库并推送 GitHub 公开仓库，许可证由 MIT 变更为 AGPL-3.0-or-later（经用户确认），新增 Docker / Nginx 部署与 GitHub Actions CI / Release，清理 README 中的版本号展示。业务代码零改动。
+
+###新增
+
+- `LICENSE`：AGPL-3.0-or-later 全文。
+- `.gitignore` / `.dockerignore`：覆盖依赖、构建产物、日志、本地配置与交付包。
+- `Dockerfile`：两阶段构建（`node:22-alpine` 构建 → `nginx:1.27-alpine` 托管）。
+- `docker-compose.yml` 与 `deploy/nginx.conf`：默认 `8088→80`，`/healthz` 探活，入口与 Service Worker 不缓存、哈希资源长缓存。
+- `.github/workflows/ci.yml`：Ubuntu / Windows / macOS 质量门禁 + Docker 镜像冒烟。
+- `.github/workflows/release.yml`：`v*` Tag 触发，产出 Windows zip / Linux tar.gz / source zip 与 GHCR 镜像，并清理旧 Release 附件、旧镜像版本与旧 artifacts。
+
+###变更
+
+- `package.json`：`license` 改为 `AGPL-3.0-or-later`（版本号保持 0.1.0，与 `src/lib/version.ts` 一致）。
+- `README.md`：移除具体版本号展示；补 Docker 部署与 CI / Release 说明；产物名使用 `<version>` 占位；许可证章节改为 AGPL。
+- `docs/02-环境部署教程.md`：新增 Docker + Nginx 部署与 CI 说明；npm 要求修正为 10+（Node 22 自带）。
+
+###验证
+
+- 本地：`npm run lint` 0 告警；`npm run build` 成功；`npm test` **102/102** 通过。
+- CI（run `43448222309`）：Quality（ubuntu / windows / macos）与 Docker image smoke test 全部成功。
+- 测试服务器 Docker 部署：容器 `healthy`；`/healthz` 与外网 8088 首页均 200；`/`、`/sw.js`、`/manifest.webmanifest`、`/favicon.svg`、`/icons/icon-192.png`、`/robots.txt` 均 200。
+
 ## [0.1.0] —2026-11-13（项目清理与文档重组）
 
 ###变更类型：工程清理 +文档重组（无功能变更）

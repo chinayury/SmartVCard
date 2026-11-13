@@ -10,7 +10,7 @@
 
 ###变更
 
-- `LICENSE`：GNU AGPL v3.0 官方全文 + 简短版权 / SPDX 头；新增 `NOTICE` 承载完整署名与 AGPL 声明（含网络服务条款），以保持 GitHub 许可证识别。
+- `LICENSE`：GNU AGPL v3.0 官方全文（不附加自定义头，确保 GitHub 正确识别）；新增 `NOTICE` 承载完整署名与 AGPL 声明（含网络服务条款）。
 - `package.json`：`license` 保持 `AGPL-3.0-or-later`；新增 `author`（智维ITMSKY，官网）。
 - `README.md`：License 章节补充 SPDX 标识、版权与 AGPL 声明（含网络服务条款），并链接 `NOTICE`。
 - `src/lib/version.ts`：新增 `APP_AUTHOR` / `APP_WEBSITE` / `APP_COPYRIGHT_YEAR` / `APP_LICENSE`，界面展示统一引用。
@@ -22,7 +22,7 @@
 
 - 本地：`npm run typecheck` 0 错误；`npm run lint` 0 告警；`npm test` **102/102** 通过；`npm run build` 成功（PWA 预缓存 33 项）。
 - 构建后复跑 `npm test`：**102/102** 通过（含 dist 静态隔离守卫）。
-- `LICENSE` 正文与 GNU 官方 `agpl-3.0.txt` 逐字节一致（34,523 字节），文件头含 SPDX 标识，完整 AGPL 声明见 `NOTICE`。
+- `LICENSE` 正文与 GNU 官方 `agpl-3.0.txt` 逐字节一致（34,523 字节），GitHub 识别为 AGPL-3.0；完整署名与声明见 `NOTICE`。
 
 ## [0.1.0] —2026-11-13（工程化交付：Git / CI / Docker / Release）
 

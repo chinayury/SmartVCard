@@ -50,7 +50,7 @@ export function About() {
  </div>
  <div className="flex justify-between gap-3">
  <dt className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">{t("about.licenseLabel")}</dt>
- <dd className="font-mono text-[12px] font-bold text-ink">MIT</dd>
+ <dd className="font-mono text-[12px] font-bold text-ink">AGPL-3.0</dd>
  </div>
  </dl>
  </aside>

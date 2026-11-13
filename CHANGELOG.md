@@ -20,6 +20,7 @@
 ###变更
 
 - `package.json`：`license` 改为 `AGPL-3.0-or-later`（版本号保持 0.1.0，与 `src/lib/version.ts` 一致）。
+- `src/components/Footer.tsx`、`src/pages/About.tsx`：界面许可证展示由 `MIT` 同步为 `AGPL-3.0`。
 - `README.md`：移除具体版本号展示；补 Docker 部署与 CI / Release 说明；产物名使用 `<version>` 占位；许可证章节改为 AGPL。
 - `docs/02-环境部署教程.md`：新增 Docker + Nginx 部署与 CI 说明；npm 要求修正为 10+（Node 22 自带）。
 

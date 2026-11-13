@@ -47,7 +47,7 @@ export function Footer() {
  </div>
  <div className="flex justify-between gap-4">
  <dt>{t("footer.licenseLabel")}</dt>
- <dd className="font-mono text-ink">MIT</dd>
+ <dd className="font-mono text-ink">AGPL-3.0</dd>
  </div>
  </dl>
  </div>

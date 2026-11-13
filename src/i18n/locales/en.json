@@ -1,0 +1,348 @@
+{
+ "app": {
+ "name": "Smart VCard",
+ "tagline": "A local-first card studio",
+ "description": "Fill in your details once, proof the card live, then hand it over as a QR code, a .vcf file, a PNG or a printed card. Everything is generated in this tab."
+ },
+ "nav": {
+ "home": "Home",
+ "generator": "Card studio",
+ "about": "About the tool",
+ "main": "Main navigation",
+ "localOnly": "Runs locally",
+ "skipToContent": "Skip to content"
+ },
+ "language": {
+ "label": "Language"
+ },
+ "common": {
+ "cancel": "Cancel",
+ "confirmEyebrow": "Please confirm"
+ },
+ "home": {
+ "eyebrow": "Indigo Grid · Local-first · No account",
+ "titleTop": "Skip the print run —",
+ "titleAccent": "hand over a card with a scan.",
+ "subtitle": "Fill it in once, proof it on the spot, then hand it over as a QR code, a .vcf, a PNG or a printed card. Nothing leaves this tab.",
+ "ctaPrimary": "Open the studio",
+ "ctaSecondary": "Read the colophon",
+ "facts": {
+ "local": "stays on this device",
+ "bilingual": "languages, one card",
+ "signup": "accounts required"
+ },
+ "specimenLabel": "Live specimen",
+ "specimenNote": "Rendered by the exact component you will use — not a mock-up.",
+ "ledger": {
+ "overline": "02 — Capability ledger",
+ "title": "Four lines this tool will not cross",
+ "subtitle": "Only the four things that change how the tool feels in use. No feature padding.",
+ "items": {
+ "bilingual": {
+ "title": "Two languages, one identity",
+ "desc": "Chinese and English share the same fields. The name order follows the name itself, so a card never reads backwards.",
+ "meta": "ZH / EN"
+ },
+ "dual": {
+ "title": "Two ways to scan",
+ "desc": "A web link for WeChat and chat apps, or a raw vCard for the system camera. Choose per audience.",
+ "meta": "URL / VCARD"
+ },
+ "local": {
+ "title": "Nothing leaves the tab",
+ "desc": "No account, no upload, no analytics. Contact details are processed by your own browser and only stored when you keep a draft.",
+ "meta": "LOCAL ONLY"
+ },
+ "install": {
+ "title": "Works on a bad connection",
+ "desc": "Install it to the home screen and the studio keeps working offline — useful at a venue with no Wi-Fi.",
+ "meta": "PWA"
+ }
+ }
+ },
+ "flow": {
+ "overline": "03 — Three moves",
+ "title": "From blank to handover",
+ "subtitle": "No wizard and no sign-up wall. The specimen updates while you type.",
+ "steps": {
+ "one": {
+ "tag": "Fill",
+ "title": "Lay out the identity",
+ "desc": "Name, role, organisation, address, social handles. Empty fields never produce empty vCard lines."
+ },
+ "two": {
+ "tag": "Proof",
+ "title": "Check the specimen",
+ "desc": "Watch the card and QR update live. Change module style, ink colour and QR payload before you commit."
+ },
+ "three": {
+ "tag": "Hand over",
+ "title": "Export or share",
+ "desc": "Download .vcf, PNG or SVG, copy the vCard text, print the card, or send a link that opens this page."
+ }
+ }
+ },
+ "privacy": {
+ "title": "A card is personal data. Keep it personal.",
+ "body": "Smart VCard has no server. Drafts live in this browser's localStorage; a share link carries the data inside the URL fragment, which is never sent to the host.",
+ "cta": "How it works"
+ },
+ "closing": {
+ "overline": "04 — Start",
+ "title": "Your next introduction can be a scan.",
+ "body": "Open the studio, fill in what matters, and leave with a card that works in WeChat, on iOS and on Android.",
+ "cta": "Open the studio"
+ }
+ },
+ "form": {
+ "overline": "02 — Studio",
+ "pageTitle": "Identity sheet",
+ "subtitle": "Everything is optional except a name. The specimen and QR update as you type.",
+ "completedCount": "{{count}} filled",
+ "import": "Import .vcf",
+ "reset": "Clear",
+ "draftSaved": "Draft kept locally · {{time}}",
+ "draftHint": "Draft saves automatically after you pause.",
+ "sectionIdentity": "Identity",
+ "sectionIdentityHint": "As printed",
+ "sectionContact": "Contact",
+ "sectionContactHint": "How to reach me",
+ "sectionWork": "Organisation",
+ "sectionWorkHint": "Where I work",
+ "sectionExtra": "Extras",
+ "sectionExtraHint": "Optional detail",
+ "firstName": "Given name",
+ "firstNamePlaceholder": "Zhiyuan",
+ "lastName": "Family name",
+ "lastNamePlaceholder": "Lin",
+ "middleName": "Middle name",
+ "nickname": "Nickname",
+ "namePrefix": "Prefix",
+ "nameSuffix": "Suffix",
+ "birthday": "Birthday",
+ "birthdayHint": "Written to the BDAY property",
+ "photo": "Photo URL",
+ "photoHint": "Remote http(s) image only; exported as PHOTO",
+ "optional": "optional",
+ "cellPhone": "Mobile",
+ "workPhone": "Work phone",
+ "email": "Email",
+ "workEmail": "Work email",
+ "url": "Website",
+ "workUrl": "Work website",
+ "organization": "Organisation",
+ "jobTitle": "Role / title",
+ "companyShortName": "Brand mark",
+ "companyShortNameHint": "Two or three letters that sit in the corner",
+ "slogan": "Tagline",
+ "sloganHint": "One line at the bottom of the card",
+ "logoUrl": "Logo",
+ "logoUrlHint": "Upload a file under 1 MB or paste an image URL. Uploads are not sent with share links.",
+ "logoPreviewAlt": "Current logo",
+ "logoUpload": "Choose logo file",
+ "logoClear": "Remove",
+ "workAddress": "Work address",
+ "street": "Street",
+ "city": "City",
+ "stateProvince": "State / province",
+ "postalCode": "Postal code",
+ "countryRegion": "Country / region",
+ "linkedIn": "LinkedIn",
+ "twitter": "X / Twitter",
+ "wechat": "WeChat ID",
+ "note": "Note",
+ "noteHint": "Up to 1000 characters; long notes are folded correctly in the .vcf",
+ "submit": "Save & proof",
+ "submitHint": "Saving only writes a draft to this browser. Nothing is uploaded.",
+ "savedToast": "Proof saved to this browser.",
+ "resetToast": "Sheet cleared.",
+ "logoWrongType": "Pick an image file (PNG, JPG, WebP, GIF or SVG).",
+ "logoTooLarge": "That image is larger than 1 MB.",
+ "logoReadError": "The image could not be read.",
+ "resetTitle": "Clear the whole sheet?",
+ "resetDesc": "Every field, the logo and the local draft will be removed. This cannot be undone.",
+ "resetConfirm": "Clear sheet",
+ "errors": {
+ "firstNameRequired": "A given name is required.",
+ "invalidUrl": "Use a full http:// or https:// address.",
+ "invalidEmail": "That email address looks incomplete.",
+ "invalidPhone": "Use digits and + - ( ) only.",
+ "invalidImage": "Use an http(s) image URL or upload a file.",
+ "invalidDate": "Use a valid date.",
+ "tooLong": "This value is too long."
+ }
+ },
+ "preview": {
+ "overline": "03 — Specimen",
+ "title": "The finished card",
+ "deliveryOverline": "04 — Handover",
+ "deliveryTitle": "Treat, carry & hand over",
+ "deliveryHint": "Pick what the QR carries, how it looks, and how the card leaves this tab.",
+ "status": {
+ "ready": "Ready",
+ "empty": "Waiting for a name",
+ "tooLong": "Too long",
+ "error": "Render failed"
+ },
+ "tooLongHint": "This payload is too dense for a reliable QR. Shorten the note, or switch the QR to a web link.",
+ "linkLabel": "Share link",
+ "copyLink": "Copy",
+ "linkUnavailable": "This card is too large to carry in a link. Switch to raw vCard, or shorten the note.",
+ "styleLabel": "Module style",
+ "styles": {
+ "square": "Square",
+ "rounded": "Soft",
+ "dots": "Dots"
+ },
+ "colorLabel": "Ink",
+ "colors": {
+ "indigo": "Indigo",
+ "navy": "Navy",
+ "teal": "Teal",
+ "slate": "Slate",
+ "black": "Black"
+ },
+ "customColor": "Custom",
+ "sizeLabel": "PNG size",
+ "downloadVcf": "Download .vcf",
+ "downloadPng": "Download PNG",
+ "downloadSvg": "Download SVG",
+ "downloadPdf": "Download PDF",
+ "print": "Print card",
+ "copyVcard": "Copy vCard",
+ "copyQrImage": "Copy QR image",
+ "share": "Share",
+ "exporting": "Rendering…",
+ "payloadBytes": "{{bytes}} B payload",
+ "emptyHint": "No payload yet",
+ "footnote": "Exports are generated in this tab. A printed card keeps exactly the same QR.",
+ "vcfReady": "Contact file downloaded.",
+ "pngReady": "PNG downloaded.",
+ "pngReadyEnlarged": "This card is dense, so it was exported at {{size}}px to stay scannable.",
+ "pngFailed": "The PNG could not be rendered. Try another size.",
+ "svgReady": "Vector SVG downloaded.",
+ "svgFailed": "The SVG could not be generated.",
+ "pdfReady": "Vector PDF downloaded — print-shop ready.",
+ "pdfFailed": "The PDF could not be generated. Try again, or use the SVG.",
+ "qrImageCopied": "QR image copied — paste it anywhere.",
+ "qrImageDownloaded": "This browser cannot copy images, so the PNG was downloaded instead.",
+ "copied": "Copied to clipboard.",
+ "copyFailed": "Copy failed — select the text manually.",
+ "shareFailed": "Sharing was cancelled or blocked.",
+ "shareUnsupportedCopied": "This browser has no share sheet, so the link was copied instead."
+ },
+ "qrMode": {
+ "label": "QR carries",
+ "vcard": "Raw vCard",
+ "url": "Web link",
+ "vcardHint": "WeChat's scanner cannot read vCard QR codes. Use this only when recipients scan with the iOS or Android camera.",
+ "urlHint": "Chat apps open this page, where one tap saves the contact. Best for WeChat and printed cards."
+ },
+ "import": {
+ "overline": "Restore",
+ "title": "Import a vCard",
+ "description": "Paste vCard text or choose a .vcf file. Known properties refill the sheet; everything else is ignored.",
+ "fileLabel": "File",
+ "textLabel": "vCard text",
+ "textPlaceholder": "BEGIN:VCARD\nVERSION:3.0\n…\nEND:VCARD",
+ "submit": "Import",
+ "errorTooLarge": "That file is larger than 256 KB.",
+ "errorRead": "The file could not be read.",
+ "errorInvalid": "No vCard properties were found in that text.",
+ "success": "vCard imported.",
+ "successMultiple": "Found {{count}} cards — the first one was loaded."
+ },
+ "card": {
+ "namePlaceholder": "Your name",
+ "logoAlt": "Company logo",
+ "qrAlt": "QR code for this contact",
+ "scan": "Scan",
+ "tagline": "Scan once, keep in touch."
+ },
+ "share": {
+ "overline": "Shared card",
+ "pageTitle": "A card sent to you",
+ "pageDescription": "Save this contact to your address book.",
+ "saveToContacts": "Save to contacts",
+ "saveHint": "The .vcf opens in your system contacts app. On iOS, use Share → Contacts if the file only previews.",
+ "savedToast": "Contact file downloaded.",
+ "copyVcard": "Copy vCard text",
+ "copied": "Copied to clipboard.",
+ "copyFailed": "Copy failed — select the text manually.",
+ "share": "Share this card",
+ "shareUnsupportedCopied": "No share sheet here, so the link was copied.",
+ "shareFailed": "Sharing was cancelled or blocked.",
+ "wechatHint": "In WeChat, tap ··· and choose “Open in Browser” — contact files do not download inside the in-app browser.",
+ "invalidTitle": "This link does not contain a readable card",
+ "invalidDesc": "The payload is missing, truncated or was edited. Ask the sender for a fresh link.",
+ "invalidCta": "Create your own card",
+ "createMine": "Create your own →",
+ "footerNote": "Generated locally"
+ },
+ "about": {
+ "overline": "Colophon",
+ "title": "About this tool",
+ "intro": "Smart VCard is a small, local-first studio for turning contact details into a card you can scan, save or print. It began as a fork and was rebuilt around a stricter vCard writer and the Indigo Grid visual system.",
+ "versionLabel": "Version",
+ "editionLabel": "Edition",
+ "licenseLabel": "Licence",
+ "principlesTitle": "Four rules",
+ "principles": {
+ "local": {
+ "title": "Local by default",
+ "desc": "There is no backend. Drafts live in localStorage; exports are produced in the tab; share links carry the payload in the fragment."
+ },
+ "interop": {
+ "title": "Interoperable, not clever",
+ "desc": "The writer emits conservative vCard 3.0, folds long lines at 75 octets and preserves international phone prefixes."
+ },
+ "legible": {
+ "title": "Legible on paper",
+ "desc": "The card is measured in blocks, weight and hairlines — not decoration. It survives a monochrome printer and a small phone screen."
+ },
+ "quiet": {
+ "title": "No dark patterns",
+ "desc": "No account wall, no upsell, no watermark, no telemetry, and nothing asks for an email address."
+ }
+ },
+ "stackTitle": "Technical record",
+ "stackNote": "Versions are pinned in package-lock.json. No UI framework beyond Tailwind utilities.",
+ "stack": {
+ "framework": "Framework",
+ "build": "Build",
+ "style": "Styling",
+ "form": "Form & schema",
+ "i18n": "Languages",
+ "qr": "QR",
+ "pwa": "Offline",
+ "router": "Routing"
+ },
+ "interopTitle": "Interoperability notes",
+ "interopBody": "Most of the hard work is invisible: the details that make a card land correctly in someone else's contacts app.",
+ "interopPoints": {
+ "format": "vCard 3.0 with a conventional property order; the N property always has five components.",
+ "wechat": "Two QR payloads, because WeChat's scanner refuses raw vCard.",
+ "folding": "CRLF endings, 75-octet folding and escaped separators, so long notes survive intact.",
+ "privacy": "Remote images are exported as URI references; uploads are never embedded in share links."
+ },
+ "creditsTitle": "Credits & licence",
+ "creditsBody": "Originally forked from farellukas/vcard-generator. The writer, card layout, studio UI and bilingual copy were rebuilt for this release.",
+ "licenseBody": "Released under the MIT licence. QR generation uses the qrcode package; icons are drawn for this project."
+ },
+ "notFound": {
+ "title": "This page never made it into the layout.",
+ "desc": "The address does not match a sheet in the studio. Head back and start from the index.",
+ "cta": "Back to the index"
+ },
+ "footer": {
+ "tagline": "A quiet studio for the card you hand over: scan, save, print.",
+ "privacyShort": "No uploads · No account",
+ "navLabel": "Index",
+ "creditsLink": "Credits & licence",
+ "metaLabel": "Release",
+ "versionLabel": "Version",
+ "editionLabel": "Edition",
+ "licenseLabel": "Licence",
+ "colophon": "Set in Helvetica & system sans · No trackers"
+ }
+}

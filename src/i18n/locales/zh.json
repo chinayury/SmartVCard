@@ -1,0 +1,348 @@
+{
+ "app": {
+ "name": "Smart VCard",
+ "tagline": "本地优先的电子名片工作台",
+ "description": "一次填写，当场校样，随后以二维码、.vcf、PNG或打印卡片交付。所有生成都发生在这个标签页里。"
+ },
+ "nav": {
+ "home": "首页",
+ "generator": "制签工坊",
+ "about": "关于这件工具",
+ "main": "主导航",
+ "localOnly": "全程本地",
+ "skipToContent": "跳到正文"
+ },
+ "language": {
+ "label": "语言"
+ },
+ "common": {
+ "cancel": "取消",
+ "confirmEyebrow": "请确认"
+ },
+ "home": {
+ "eyebrow": "靛格制签 · 全程本地 · 无需注册",
+ "titleTop": "名片不必等印刷，",
+ "titleAccent": "扫码就能递出去",
+ "subtitle": "一次填写，当场校样，随后以二维码、.vcf、PNG或打印卡片交付——所有内容都不离开这个标签页。",
+ "ctaPrimary": "进入制签工坊",
+ "ctaSecondary": "先看设计说明",
+ "facts": {
+ "local": "数据只留在这台设备",
+ "bilingual": "中英双语，同一张卡",
+ "signup": "注册、登录、账号都不需要"
+ },
+ "specimenLabel": "实时校样",
+ "specimenNote": "这张卡由你即将使用的同一个组件渲染，不是示意图。",
+ "ledger": {
+ "overline": "02 — 能力清单",
+ "title": "四条不会妥协的设计底线",
+ "subtitle": "只列真正影响使用手感的四件事，不堆功能。",
+ "items": {
+ "bilingual": {
+ "title": "两种语言，一个身份",
+ "desc": "中英字段共用一份数据；姓名顺序跟随名字本身，中文姓在前，英文名在前，读起来不会反。",
+ "meta": "中 / EN"
+ },
+ "dual": {
+ "title": "二维码有两条通道",
+ "desc": "发给微信好友用网页链接，印在名片上可用原生 vCard。按对象切换即可。",
+ "meta": "链接 / VCARD"
+ },
+ "local": {
+ "title": "资料不出标签页",
+ "desc": "没有账号、没有上传、没有统计。联系方式由本机浏览器处理，只有你主动留档才会写入本地。",
+ "meta": "纯本地"
+ },
+ "install": {
+ "title": "弱网也能用",
+ "desc": "添加到主屏后离线可用，展会现场没有 Wi-Fi 也不耽误出卡。",
+ "meta": "可安装"
+ }
+ }
+ },
+ "flow": {
+ "overline": "03 — 三个动作",
+ "title": "从空白到交付",
+ "subtitle": "没有向导，也没有注册墙；校样随输入即时更新。",
+ "steps": {
+ "one": {
+ "tag": "填写",
+ "title": "先排身份",
+ "desc": "姓名、职位、机构、地址、社交账号。空字段不会生成空行。"
+ },
+ "two": {
+ "tag": "校样",
+ "title": "当场检查成品",
+ "desc": "名片与二维码实时更新；交付前可切换模块样式、墨色和二维码内容。"
+ },
+ "three": {
+ "tag": "交付",
+ "title": "导出或分享",
+ "desc": "下载 .vcf、PNG、SVG，复制 vCard 文本，打印卡片，或直接发一条能打开本页的链接。"
+ }
+ }
+ },
+ "privacy": {
+ "title": "名片是个人信息，就该留在个人手里。",
+ "body": "Smart VCard 没有服务器。草稿存在本机 localStorage；分享链接把数据放在 URL 的 # 片段里，这段内容不会被发送给托管方。",
+ "cta": "看实现细节"
+ },
+ "closing": {
+ "overline": "04 — 开始",
+ "title": "下一次自我介绍，可以是一次扫码。",
+ "body": "打开工坊，填上真正重要的信息，带走一张在微信、iOS 和安卓上都能用的名片。",
+ "cta": "进入制签工坊"
+ }
+ },
+ "form": {
+ "overline": "02 — 制签工坊",
+ "pageTitle": "名片信息",
+ "subtitle": "除姓名外全部可选。名片与二维码会随输入实时更新。",
+ "completedCount": "已填写 {{count}} 项",
+ "import": "导入 .vcf",
+ "reset": "清空",
+ "draftSaved": "草稿已留档 · {{time}}",
+ "draftHint": "停顿后自动保存草稿",
+ "sectionIdentity": "身份",
+ "sectionIdentityHint": "按印刷习惯",
+ "sectionContact": "联络",
+ "sectionContactHint": "怎么找到我",
+ "sectionWork": "机构",
+ "sectionWorkHint": "我在哪里工作",
+ "sectionExtra": "补充",
+ "sectionExtraHint": "可选细节",
+ "firstName": "名",
+ "firstNamePlaceholder": "知远",
+ "lastName": "姓",
+ "lastNamePlaceholder": "林",
+ "middleName": "中间名",
+ "nickname": "昵称",
+ "namePrefix": "称谓",
+ "nameSuffix": "后缀",
+ "birthday": "生日",
+ "birthdayHint": "写入 BDAY 属性",
+ "photo": "头像链接",
+ "photoHint": "仅支持 http(s) 远程图片，导出为 PHOTO",
+ "optional": "可选",
+ "cellPhone": "手机",
+ "workPhone": "工作电话",
+ "email": "邮箱",
+ "workEmail": "工作邮箱",
+ "url": "个人网站",
+ "workUrl": "公司网站",
+ "organization": "公司 / 机构",
+ "jobTitle": "职位",
+ "companyShortName": "品牌简称",
+ "companyShortNameHint": "两三个字，放在卡片左上角",
+ "slogan": "一句话介绍",
+ "sloganHint": "名片底部的一行字",
+ "logoUrl": "Logo",
+ "logoUrlHint": "上传 1MB 以内的图片，或粘贴图片地址；分享链接不会携带 Logo。",
+ "logoPreviewAlt": "当前 Logo",
+ "logoUpload": "选择 Logo 文件",
+ "logoClear": "移除",
+ "workAddress": "工作地址",
+ "street": "街道",
+ "city": "城市",
+ "stateProvince": "省 / 州",
+ "postalCode": "邮编",
+ "countryRegion": "国家 / 地区",
+ "linkedIn": "LinkedIn",
+ "twitter": "X / Twitter",
+ "wechat": "微信号",
+ "note": "备注",
+ "noteHint": "最多 1000 字；超长备注会在 .vcf 中按规范折行",
+ "submit": "保存并校样",
+ "submitHint": "保存只会写入本机浏览器，不会上传。",
+ "savedToast": "校样已保存在本机浏览器。",
+ "resetToast": "已清空名片信息。",
+ "logoWrongType": "请选择图片文件（PNG、JPG、WebP、GIF 或 SVG）。",
+ "logoTooLarge": "图片超过 1MB。",
+ "logoReadError": "图片读取失败。",
+ "resetTitle": "清空整张名片？",
+ "resetDesc": "所有字段、Logo 和本地草稿都会被删除，且无法撤销。",
+ "resetConfirm": "确认清空",
+ "errors": {
+ "firstNameRequired": "姓名为必填项。",
+ "invalidUrl": "请填写完整的 http:// 或 https:// 地址。",
+ "invalidEmail": "邮箱格式不完整。",
+ "invalidPhone": "电话只能包含数字与 + - ( )。",
+ "invalidImage": "请使用 http(s) 图片地址，或直接上传文件。",
+ "invalidDate": "请填写有效日期。",
+ "tooLong": "内容超出长度上限。"
+ }
+ },
+ "preview": {
+ "overline": "03 — 校样",
+ "title": "成品名片",
+ "deliveryOverline": "04 — 交付台",
+ "deliveryTitle": "承载、样式与交付",
+ "deliveryHint": "选择二维码装什么、长什么样，以及名片以哪种格式离开这个标签页。",
+ "status": {
+ "ready": "已就绪",
+ "empty": "等待姓名",
+ "tooLong": "内容过长",
+ "error": "渲染失败"
+ },
+ "tooLongHint": "这串内容对二维码来说过于密集。请缩短备注，或把二维码切换为网页链接。",
+ "linkLabel": "分享链接",
+ "copyLink": "复制",
+ "linkUnavailable": "这张名片太大，装不进链接。请改用原生 vCard，或缩短备注。",
+ "styleLabel": "模块样式",
+ "styles": {
+ "square": "方块",
+ "rounded": "圆角",
+ "dots": "圆点"
+ },
+ "colorLabel": "墨色",
+ "colors": {
+ "indigo": "靛蓝",
+ "navy": "墨蓝",
+ "teal": "松绿",
+ "slate": "石板",
+ "black": "纯黑"
+ },
+ "customColor": "自定义",
+ "sizeLabel": "PNG 尺寸",
+ "downloadVcf": "下载 .vcf",
+ "downloadPng": "下载 PNG",
+ "downloadSvg": "下载 SVG",
+ "downloadPdf": "下载 PDF",
+ "print": "打印名片",
+ "copyVcard": "复制 vCard",
+ "copyQrImage": "复制二维码图片",
+ "share": "分享",
+ "exporting": "正在生成…",
+ "payloadBytes": "内容 {{bytes}} B",
+ "emptyHint": "尚未生成内容",
+ "footnote": "所有导出都在本标签页生成；打印出来的卡片与二维码完全一致。",
+ "vcfReady": "联系人文件已下载。",
+ "pngReady": "PNG 已下载。",
+ "pngReadyEnlarged": "名片内容较密，已按 {{size}}px 导出以保证可扫。",
+ "pngFailed": "PNG 生成失败，请换一个尺寸再试。",
+ "svgReady": "矢量 SVG 已下载。",
+ "svgFailed": "SVG 生成失败。",
+ "pdfReady": "矢量 PDF 已下载，可直接交印刷店。",
+ "pdfFailed": "PDF 生成失败，请重试或改用 SVG。",
+ "qrImageCopied": "二维码图片已复制，可直接粘贴。",
+ "qrImageDownloaded": "此浏览器不支持复制图片，已改为下载 PNG。",
+ "copied": "已复制到剪贴板。",
+ "copyFailed": "复制失败，请手动选中文本。",
+ "shareFailed": "分享被取消或被浏览器拦截。",
+ "shareUnsupportedCopied": "此浏览器不支持系统分享，已改为复制链接。"
+ },
+ "qrMode": {
+ "label": "二维码承载",
+ "vcard": "原生 vCard",
+ "url": "网页链接",
+ "vcardHint": "微信扫码器无法识别 vCard 二维码。仅当对方用 iOS / 安卓系统相机扫码时才选这项。",
+ "urlHint": "聊天工具扫码会打开本页，点一下即可保存联系人。发给微信好友、印在名片上都合适。"
+ },
+ "import": {
+ "overline": "恢复",
+ "title": "导入 vCard",
+ "description": "粘贴 vCard 文本或选择 .vcf 文件。能识别的属性会回填到表单，其余忽略。",
+ "fileLabel": "文件",
+ "textLabel": "vCard 文本",
+ "textPlaceholder": "BEGIN:VCARD\nVERSION:3.0\n…\nEND:VCARD",
+ "submit": "导入",
+ "errorTooLarge": "文件超过 256KB。",
+ "errorRead": "文件读取失败。",
+ "errorInvalid": "这段文本里没有找到可识别的 vCard 属性。",
+ "success": "vCard 已导入。",
+ "successMultiple": "检测到 {{count}} 张名片，已载入第 1 张。"
+ },
+ "card": {
+ "namePlaceholder": "你的名字",
+ "logoAlt": "公司 Logo",
+ "qrAlt": "这张名片的二维码",
+ "scan": "扫码",
+ "tagline": "扫一次，常联系。"
+ },
+ "share": {
+ "overline": "分享名片",
+ "pageTitle": "有人给你发来一张名片",
+ "pageDescription": "把这张名片保存到通讯录。",
+ "saveToContacts": "保存到通讯录",
+ "saveHint": ".vcf 会用系统通讯录打开。iOS 若只是预览，请点「分享」→「通讯录」。",
+ "savedToast": "联系人文件已下载。",
+ "copyVcard": "复制 vCard 文本",
+ "copied": "已复制到剪贴板。",
+ "copyFailed": "复制失败，请手动选中文本。",
+ "share": "分享这张名片",
+ "shareUnsupportedCopied": "此浏览器不支持系统分享，已改为复制链接。",
+ "shareFailed": "分享被取消或被浏览器拦截。",
+ "wechatHint": "在微信里请点右上角 ···，选择「在浏览器打开」——内置浏览器不会下载联系人文件。",
+ "invalidTitle": "这条链接里没有可读的名片",
+ "invalidDesc": "内容缺失、被截断或被改动过。请向发送方要一条新链接。",
+ "invalidCta": "自己生成一张",
+ "createMine": "自己做一张 →",
+ "footerNote": "本地生成"
+ },
+ "about": {
+ "overline": "版本说明",
+ "title": "关于这件工具",
+ "intro": "Smart VCard 是一个本地优先的小型名片工坊：把联系方式做成可扫码、可保存、可打印的卡片。它从一个开源分支起步，这一版围绕更严格的 vCard 写入器与「靛格制签」视觉体系重做。",
+ "versionLabel": "版本",
+ "editionLabel": "版本线",
+ "licenseLabel": "许可",
+ "principlesTitle": "四条原则",
+ "principles": {
+ "local": {
+ "title": "默认本地",
+ "desc": "没有后端。草稿在 localStorage，导出在本标签页完成，分享链接把数据放在 # 片段里。"
+ },
+ "interop": {
+ "title": "兼容优先，不耍聪明",
+ "desc": "写入保守的 vCard 3.0，长行按 75 字节折行，国际区号原样保留。"
+ },
+ "legible": {
+ "title": "印在纸上也清楚",
+ "desc": "卡片靠色块、字重和细线建立层次，不靠装饰；黑白打印和小屏阅读都不塌。"
+ },
+ "quiet": {
+ "title": "没有暗黑套路",
+ "desc": "没有账号墙、没有加购、没有水印、没有埋点，也不会向你索要邮箱。"
+ }
+ },
+ "stackTitle": "技术档案",
+ "stackNote": "版本由 package-lock.json 锁定；除 Tailwind 工具类外没有额外 UI 框架。",
+ "stack": {
+ "framework": "框架",
+ "build": "构建",
+ "style": "样式",
+ "form": "表单与校验",
+ "i18n": "语言",
+ "qr": "二维码",
+ "pwa": "离线",
+ "router": "路由"
+ },
+ "interopTitle": "互操作说明",
+ "interopBody": "真正费工夫的部分大多看不见：让一张卡准确落进别人通讯录的那些细节。",
+ "interopPoints": {
+ "format": "vCard 3.0，属性顺序保守，N 字段始终是五段。",
+ "wechat": "两套二维码内容，因为微信扫码器不认原生 vCard。",
+ "folding": "CRLF 换行、75 字节折行、分隔符转义，长备注不会截断。",
+ "privacy": "远程图片以 URI 引用导出；上传的 Logo 不会进入分享链接。"
+ },
+ "creditsTitle": "致谢与许可",
+ "creditsBody": "最初分支自 farellukas/vcard-generator。本次发布重写了写入器、名片版式、工坊界面与双语文案。",
+ "licenseBody": "以 MIT 协议发布。二维码由 qrcode 生成，图标为本项目绘制。"
+ },
+ "notFound": {
+ "title": "这一页还没有被排进版里。",
+ "desc": "地址对不上工坊里的任何一张纸。回到首页重新开始。",
+ "cta": "回到首页"
+ },
+ "footer": {
+ "tagline": "安静地做一张能递出去的名片：可扫、可存、可打印。",
+ "privacyShort": "不上传 · 不注册",
+ "navLabel": "索引",
+ "creditsLink": "致谢与许可",
+ "metaLabel": "版本信息",
+ "versionLabel": "版本",
+ "editionLabel": "版本线",
+ "licenseLabel": "许可",
+ "colophon": "Helvetica 与系统无衬线 · 无追踪"
+ }
+}

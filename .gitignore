@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+release/
+out/
+*.tsbuildinfo
+
+# Runtime and delivery artefacts
+*.log
+*.zip
+*.tar.gz
+SmartVCard-secrets/
+output/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Tooling caches
+.eslintcache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+.vite/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -286,6 +286,8 @@
  "versionLabel": "Version",
  "editionLabel": "Edition",
  "licenseLabel": "Licence",
+ "developerLabel": "Developer",
+ "websiteLabel": "Website",
  "principlesTitle": "Four rules",
  "principles": {
  "local": {
@@ -327,7 +329,7 @@
  },
  "creditsTitle": "Credits & licence",
  "creditsBody": "Originally forked from farellukas/vcard-generator. The writer, card layout, studio UI and bilingual copy were rebuilt for this release.",
- "licenseBody": "Released under the MIT licence. QR generation uses the qrcode package; icons are drawn for this project."
+ "licenseBody": "Released under the GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later); if you modify it and offer it over a network, you must offer users the corresponding source. QR generation uses the qrcode package; icons are drawn for this project."
  },
  "notFound": {
  "title": "This page never made it into the layout.",
@@ -343,6 +345,8 @@
  "versionLabel": "Version",
  "editionLabel": "Edition",
  "licenseLabel": "Licence",
+ "developerLabel": "Developer",
+ "websiteLabel": "Website",
  "colophon": "Set in Helvetica & system sans · No trackers"
  }
 }

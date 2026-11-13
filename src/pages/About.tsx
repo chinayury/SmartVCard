@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Icon, type IconName } from "../components/Icon";
 import { useDocumentHead } from "../hooks/useDocumentHead";
-import { APP_EDITION, APP_VERSION } from "../lib/version";
+import { APP_AUTHOR, APP_EDITION, APP_LICENSE, APP_VERSION, APP_WEBSITE } from "../lib/version";
 
 interface Principle {
  id: "local" | "interop" | "legible" | "quiet";
@@ -48,9 +48,21 @@ export function About() {
  <dt className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">{t("about.editionLabel")}</dt>
  <dd className="text-[12px] font-semibold text-ink">{APP_EDITION}</dd>
  </div>
- <div className="flex justify-between gap-3">
+ <div className="flex justify-between gap-3 border-b border-line pb-2">
  <dt className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">{t("about.licenseLabel")}</dt>
- <dd className="font-mono text-[12px] font-bold text-ink">AGPL-3.0</dd>
+ <dd className="font-mono text-[12px] font-bold text-ink">{APP_LICENSE}</dd>
+ </div>
+ <div className="flex justify-between gap-3 border-b border-line pb-2">
+ <dt className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">{t("about.developerLabel")}</dt>
+ <dd className="text-[12px] font-semibold text-ink">{APP_AUTHOR}</dd>
+ </div>
+ <div className="flex justify-between gap-3">
+ <dt className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted">{t("about.websiteLabel")}</dt>
+ <dd className="font-mono text-[12px] font-bold text-indigo-deep">
+ <a className="link" href={APP_WEBSITE} target="_blank" rel="noreferrer">
+ {APP_WEBSITE.replace(/^https?:\/\//, "")}
+ </a>
+ </dd>
  </div>
  </dl>
  </aside>

@@ -2,6 +2,28 @@
 
 本文件只追加，不修改历史记录。
 
+## [0.1.0] —2026-11-13（许可与署名信息规范化）
+
+###变更类型：许可声明规范化 + 署名信息补全（无功能变更）
+
+> 根据项目方确认，许可证保持 AGPL-3.0-or-later；补充开发者「智维ITMSKY」、版权「Copyright (C) 2026 智维ITMSKY」、官网 `http://www.itmsky.com` 与 SPDX 标识，并明确 AGPL 网络服务源码义务。功能零变更。
+
+###变更
+
+- `LICENSE`：GNU AGPL v3.0 官方全文；文件头增加项目名、版权方、官网、SPDX 标识与 AGPL 标准声明（含网络服务条款）。
+- `package.json`：`license` 保持 `AGPL-3.0-or-later`；新增 `author`（智维ITMSKY，官网）。
+- `README.md`：License 章节补充 SPDX 标识、版权与 AGPL 声明（含网络服务条款）。
+- `src/lib/version.ts`：新增 `APP_AUTHOR` / `APP_WEBSITE` / `APP_COPYRIGHT_YEAR` / `APP_LICENSE`，界面展示统一引用。
+- `src/components/Footer.tsx`、`src/pages/About.tsx`：新增开发者与官网条目；版权行改为「© 2026 智维ITMSKY · Smart VCard」；许可显示保持 AGPL-3.0。
+- `src/i18n/locales/zh.json`、`src/i18n/locales/en.json`：补充开发者 / 官网文案；许可说明改为 AGPL-3.0-or-later 并注明网络服务源码义务；修正上一轮遗漏的「MIT 协议」残留。
+- `index.html`：`author` 元信息改为智维ITMSKY，新增 `copyright` 元信息。
+
+###验证
+
+- 本地：`npm run typecheck` 0 错误；`npm run lint` 0 告警；`npm test` **102/102** 通过；`npm run build` 成功（PWA 预缓存 33 项）。
+- 构建后复跑 `npm test`：**102/102** 通过（含 dist 静态隔离守卫）。
+- `LICENSE` 正文与 GNU 官方 `agpl-3.0.txt` 逐字节一致（34,523 字节），文件头含 SPDX 与 AGPL 声明。
+
 ## [0.1.0] —2026-11-13（工程化交付：Git / CI / Docker / Release）
 
 ###变更类型：仓库初始化 + 发布流水线 + 容器化部署（无业务功能变更）

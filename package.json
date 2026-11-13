@@ -5,6 +5,10 @@
   "type": "module",
   "description": "Smart VCard — a privacy-first, bilingual vCard QR code studio that runs entirely in the browser.",
   "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "智维ITMSKY",
+    "url": "http://www.itmsky.com"
+  },
   "engines": {
     "node": ">=22.15.0"
   },

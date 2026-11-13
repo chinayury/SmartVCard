@@ -17,7 +17,7 @@
 - [可用脚本](#可用脚本)
 - [质量基线](#质量基线)
 - [交付文档](#交付文档)
-- [License](#license)
+- [许可与信息](#许可与信息)
 
 ## 项目简介
 
@@ -207,17 +207,15 @@ smart-vcard/
 | 变更记录 | [CHANGELOG.md](CHANGELOG.md) |
 | 环境变量说明 | [.env.example](.env.example) |
 
-## License
+## 许可与信息
 
-[AGPL-3.0-or-later](LICENSE)
-
+开发者：智维ITMSKY  
+版权：Copyright (C) 2026 智维ITMSKY  
+官网：http://www.itmsky.com  
+许可证：GNU Affero General Public License v3.0 or later（AGPL-3.0-or-later，见 LICENSE）  
 SPDX-License-Identifier: AGPL-3.0-or-later
 
-Copyright (C) 2026 智维ITMSKY · <http://www.itmsky.com>
-
-完整署名与 AGPL 声明见 [NOTICE](NOTICE)。
-
-本程序是自由软件：你可以遵照 GNU Affero 通用公共许可证第3版或后续版本的规定，重新分发和/或修改它。
-本程序旨在广泛共享，但不提供任何担保；甚至不包含适销性和特定用途适用性的默示保证。详情请参阅 GNU Affero General Public License。
-如果你修改本程序并通过网络向公众提供服务（SaaS、Web、API等在线服务），你必须向该服务的使用者提供对应修改后的完整源代码。
-你应当随本程序一同收到 GNU Affero General Public License 的副本；如未收到，详见 <https://www.gnu.org/licenses/>。
+> 本程序是自由软件：你可以遵照 GNU Affero 通用公共许可证第3版或后续版本的规定，重新分发和/或修改它。  
+> 本程序旨在广泛共享，但不提供任何担保；甚至不包含适销性和特定用途适用性的默示保证。详情请参阅 GNU Affero General Public License。  
+> 如果你修改本程序并通过网络向公众提供服务（SaaS、Web、API等在线服务），你必须向该服务的使用者提供对应修改后的完整源代码。  
+> 你应当随本程序一同收到 GNU Affero General Public License 的副本；如未收到，详见 <https://www.gnu.org/licenses/>。

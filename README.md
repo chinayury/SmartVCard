@@ -215,6 +215,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 Copyright (C) 2026 智维ITMSKY · <http://www.itmsky.com>
 
+完整署名与 AGPL 声明见 [NOTICE](NOTICE)。
+
 本程序是自由软件：你可以遵照 GNU Affero 通用公共许可证第3版或后续版本的规定，重新分发和/或修改它。
 本程序旨在广泛共享，但不提供任何担保；甚至不包含适销性和特定用途适用性的默示保证。详情请参阅 GNU Affero General Public License。
 如果你修改本程序并通过网络向公众提供服务（SaaS、Web、API等在线服务），你必须向该服务的使用者提供对应修改后的完整源代码。

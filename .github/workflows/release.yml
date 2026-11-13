@@ -85,9 +85,17 @@ jobs:
           set -euo pipefail
           IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
           VERSION="${TAG#v}"
-          docker build -t "$IMAGE:${VERSION}" -t "$IMAGE:latest" .
-          docker push "$IMAGE:${VERSION}"
-          docker push "$IMAGE:latest"
+          # Single-platform, single-manifest image: no provenance/SBOM
+          # attestations, so the cleanup job can never delete a child manifest
+          # that the tagged index still references.
+          docker buildx build \
+            --platform linux/amd64 \
+            --provenance=false \
+            --sbom=false \
+            -t "$IMAGE:${VERSION}" \
+            -t "$IMAGE:latest" \
+            --push \
+            .
 
   release:
     name: Publish GitHub Release

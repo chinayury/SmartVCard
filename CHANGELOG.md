@@ -23,6 +23,7 @@
 - `src/components/Footer.tsx`、`src/pages/About.tsx`：界面许可证展示由 `MIT` 同步为 `AGPL-3.0`。
 - `README.md`：移除具体版本号展示；补 Docker 部署与 CI / Release 说明；产物名使用 `<version>` 占位；许可证章节改为 AGPL。
 - `docs/02-环境部署教程.md`：新增 Docker + Nginx 部署与 CI 说明；npm 要求修正为 10+（Node 22 自带）。
+- `.github/workflows/release.yml`：清理 job 改为 API 批量删除；镜像改为 `linux/amd64` 单平台、`--provenance=false --sbom=false` 单清单构建，避免清理未打 Tag 的子清单时破坏索引。
 
 ###验证
 

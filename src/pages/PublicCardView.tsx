@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import CardPreview from "../components/CardPreview";
@@ -6,7 +6,7 @@ import { Icon } from "../components/Icon";
 import { useDocumentHead } from "../hooks/useDocumentHead";
 import { useQrPreview } from "../hooks/useQrPreview";
 import { useToast } from "../hooks/useToast";
-import { decodeShareParam } from "../lib/cardShare";
+import { decodeShareParam, type SharedCard } from "../lib/cardShare";
 import { copyText, downloadText } from "../lib/download";
 import { sanitizeFilename } from "../lib/text";
 
@@ -28,9 +28,26 @@ function isWeChatBrowser(): boolean {
 export function PublicCardView({ encoded }: PublicCardViewProps) {
  const { t } = useTranslation();
  const toast = useToast();
- useDocumentHead({ title: t("share.pageTitle"), description: t("share.pageDescription") });
+ // Recipient-facing payload: keep the page out of search indexes.
+ useDocumentHead({ title: t("share.pageTitle"), description: t("share.pageDescription"), noindex: true });
 
- const shared = useMemo(() => decodeShareParam(encoded), [encoded]);
+ // undefined = still decoding (the payload may be deflated), null = invalid.
+ const [shared, setShared] = useState<SharedCard | null | undefined>(undefined);
+ useEffect(() => {
+ let cancelled = false;
+ setShared(undefined);
+ decodeShareParam(encoded)
+ .then((result) => {
+ if (!cancelled) setShared(result);
+ })
+ .catch(() => {
+ if (!cancelled) setShared(null);
+ });
+ return () => {
+ cancelled = true;
+ };
+ }, [encoded]);
+
  const memoKey = useMemo(() => (shared ? JSON.stringify(shared.values) : ""), [shared]);
  const isWechat = useMemo(() => isWeChatBrowser(), []);
 
@@ -41,6 +58,7 @@ export function PublicCardView({ encoded }: PublicCardViewProps) {
 
  const qr = useQrPreview(shared ? shareUrl : null, "#2b4acb", "rounded");
 
+ if (shared === undefined) return null;
  if (!shared) {
  return (
  <div className="shell max-w-lg py-20">

@@ -1,7 +1,7 @@
 {
   "name": "smart-vcard",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Smart VCard — a privacy-first, bilingual vCard QR code studio that runs entirely in the browser.",
   "license": "AGPL-3.0-or-later",
@@ -15,9 +15,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "typecheck": "tsc -b",
-    "lint": "eslint .",
-    "test": "node --import ./scripts/node-test-resolver.mjs --test \"tests/**/*.test.ts\"",
+ "typecheck": "tsc -b",
+ "lint": "eslint .",
+ "test": "node --import ./scripts/node-test-resolver.mjs --test \"tests/**/*.test.ts\"",
+ "verify": "npm run lint && npm run build && npm test",
     "test:watch": "node --import ./scripts/node-test-resolver.mjs --test --watch \"tests/**/*.test.ts\"",
     "icons": "node scripts/make-icons.mjs",
     "preview": "vite preview",

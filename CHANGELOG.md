@@ -2,6 +2,31 @@
 
 本文件只追加，不修改历史记录。
 
+## [0.1.1] —2026-11-14（每周维护轮：分享载荷压缩 + 隐私加固）
+
+###变更类型：改进 + 安全/隐私加固 + 依赖维护（无破坏性变更）
+
+> 本轮为首次自动化每周维护循环（调研借鉴 → Issues 巡检 → 优化 → 发布 → 清理验证）。核心改进来自同类项目调研（17 仓库核实、6 个深读）：分享链接载荷引入 deflate-raw 压缩，密名片二维码显著变稀疏、更易扫；旧链接完全兼容。
+
+###新增
+
+- 分享链接载荷 v2 格式（借鉴 byzcard，MIT）：优先 `deflate-raw` 压缩（`d` 前缀），压缩无收益或浏览器不支持 `CompressionStream` 时回退纯文本（`p` 前缀），两者取更短；无 flag 的旧格式链接永久兼容（旧载荷 base64 必以 `e` 开头，永不与 flag 冲突）。
+- `npm run verify`：一键质量门禁（lint + build + test，守卫对最新 dist 断言）。
+- 分享落地页（PublicCardView）输出 `robots: noindex` meta——收卡页不入搜索索引（借鉴 swiish 隐私三件套的第一项）。
+
+###变更
+
+- `encodeSharePayload` / `decodeSharePayload` / `buildShareUrl` / `decodeShareParam` 转为异步（压缩/解压为流式 API）；`Generator` 分享链接改为 effect 异步产出（取消保护），`PublicCardView` 解码改为三态（解码中 / 无效 / 就绪），解码期间不闪错误页。
+- 依赖 semver 范围内刷新（react 19.3.1、vite 8.3.8、react-router-dom 7.18.5、@unhead/react 3.4.3、typescript-eslint 8.72.2 等；package.json 版本范围不动，仅 lockfile 更新）。
+- 清理文档与源码中硬编码的版本标记（docs/01–04 头部、`.env.example`、`src/index.css` 注释；版本声明收敛于 package.json + `src/lib/version.ts` 两处；CHANGELOG 历史与 localStorage「引入版本」列属历史语义，保留）。
+- README：测试计数 102 → 106；质量门禁命令改为一键 `npm run verify`；脚本表新增 verify。
+
+###验证
+
+- 本地：`npm run verify` 全绿——typecheck 0 错误、lint 0 告警、测试 **106/106**（新增 4 项：d 标记压缩回环、无 CompressionStream 回退、旧格式兼容、损坏压缩载荷拒绝）、build 成功（PWA 预缓存 33 项）。
+- 浏览器实测（Chromium，vite preview）：压缩链接（`d` 前缀）渲染完整名片；旧格式链接正常打开；`robots: noindex` 已注入；工坊页填写姓名后分享链接自动变为压缩格式（75 字符），空载荷回退 `p` 格式——「两者取更短」决策正确。
+- `npm audit --omit=dev`（官方 registry）→ **0 漏洞**（全量 12 条均在构建工具链，不进入 dist，守卫测试验证）。
+
 ## [0.1.0] —2026-11-13（许可与署名信息规范化）
 
 ###变更类型：许可声明规范化 + 署名信息补全（无功能变更）

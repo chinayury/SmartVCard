@@ -109,7 +109,7 @@ npm run dev
 # → http://localhost:5173
 
 # 3. 质量门禁（先构建后测试，安全守卫对 dist 断言）
-npm run lint && npm run build && npm test
+npm run verify
 
 # 4. 预览构建结果
 npm run preview
@@ -175,21 +175,22 @@ smart-vcard/
 | 命令 | 用途 |
 |---|---|
 | `npm run dev` | 启动开发服务 |
-| `npm test` | 运行全部测试（102 项） |
+| `npm test` | 运行全部测试（106 项） |
 | `npm run test:watch` | 监听模式跑测试 |
 | `npm run lint` | ESLint 静态检查 |
 | `npm run typecheck` | TypeScript 类型检查 |
 | `npm run build` | 类型检查 + 生产构建（含 CSP 注入与 PWA） |
+| `npm run verify` | 一键质量门禁：lint + build + test（守卫对 dist 断言） |
 | `npm run preview` | 本地预览构建产物 |
 | `npm run icons` | 重新生成 PWA PNG 图标 |
 | `npm run archive` | 打包交付 ZIP（UTF-8 文件名，排除 node_modules/日志） |
 
 ## 质量基线
 
-- 测试 **102/102** 通过（vcard / vcardParse / roundTrip / qr / qrDecode / schema / settings / text / i18n / security / cardShare）。
+- 测试 **106/106** 通过（vcard / vcardParse / roundTrip / qr / qrDecode / schema / settings / text / i18n / security / cardShare）。
 - `tsc -b` 与 `eslint .` 零告警。
 - 生产依赖 `npm audit --omit=dev` **0 漏洞**。
-- 质量门禁本地复现：`npm run lint && npm run build && npm test`。
+- 质量门禁本地复现：`npm run verify`。
 - CI：GitHub Actions 在 Ubuntu / Windows / macOS 运行同一套门禁，并构建 Docker 镜像检查 `/healthz`、`/`、`/sw.js`。
 - Release：推送 `v*` Tag 触发，产出 `SmartVCard-<version>-Windows-x64.zip`、`SmartVCard-<version>-Linux-x64.tar.gz`、`SmartVCard-<version>-source.zip` 及 `ghcr.io/<owner>/smartvcard:<version>` / `:latest` 镜像；发布后自动清理旧附件、旧镜像版本与旧 artifacts。
 

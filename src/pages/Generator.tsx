@@ -100,14 +100,25 @@ export function Generator() {
  const filled = countFilledFields(values);
  const meaningful = filled > 0;
 
- const shareUrl = (() => {
- try {
- return buildShareUrl(JSON.parse(valuesJson) as VCardFormValues);
- } catch {
+ // The share payload may be deflated (an async browser API), so the URL
+ // arrives one tick after the values change. "" means "cannot fit" and the
+ // panel explains the fallback.
+ const [shareUrl, setShareUrl] = useState("");
+ useEffect(() => {
+ let cancelled = false;
+ const parsed = JSON.parse(valuesJson) as VCardFormValues;
+ buildShareUrl(parsed)
+ .then((url) => {
+ if (!cancelled) setShareUrl(url);
+ })
+ .catch(() => {
  // Payload cannot fit in a share link; the panel explains the fallback.
- return "";
- }
- })();
+ if (!cancelled) setShareUrl("");
+ });
+ return () => {
+ cancelled = true;
+ };
+ }, [valuesJson]);
 
  const payload = !meaningful
  ? null

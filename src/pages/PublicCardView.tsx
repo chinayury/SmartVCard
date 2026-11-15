@@ -6,7 +6,7 @@ import { Icon } from "../components/Icon";
 import { useDocumentHead } from "../hooks/useDocumentHead";
 import { useQrPreview } from "../hooks/useQrPreview";
 import { useToast } from "../hooks/useToast";
-import { decodeShareParam, type SharedCard } from "../lib/cardShare";
+import { decodeShareParam, SharePasswordRequiredError, type SharedCard } from "../lib/cardShare";
 import { copyText, downloadText } from "../lib/download";
 import { sanitizeFilename } from "../lib/text";
 
@@ -31,22 +31,50 @@ export function PublicCardView({ encoded }: PublicCardViewProps) {
  // Recipient-facing payload: keep the page out of search indexes.
  useDocumentHead({ title: t("share.pageTitle"), description: t("share.pageDescription"), noindex: true });
 
- // undefined = still decoding (the payload may be deflated), null = invalid.
+ // undefined = still decoding (the payload may be deflated or encrypted),
+ // null = invalid so far. An encrypted link asks for its passphrase here —
+ // the passphrase travels out-of-band and is never part of the URL.
  const [shared, setShared] = useState<SharedCard | null | undefined>(undefined);
+ const [needsPassword, setNeedsPassword] = useState(false);
+ const [passwordError, setPasswordError] = useState(false);
+ const [password, setPassword] = useState("");
  useEffect(() => {
  let cancelled = false;
  setShared(undefined);
+ setNeedsPassword(false);
+ setPasswordError(false);
  decodeShareParam(encoded)
  .then((result) => {
  if (!cancelled) setShared(result);
  })
- .catch(() => {
- if (!cancelled) setShared(null);
+ .catch((error) => {
+ if (cancelled) return;
+ if (error instanceof SharePasswordRequiredError) setNeedsPassword(true);
+ setShared(null);
  });
  return () => {
  cancelled = true;
  };
  }, [encoded]);
+
+ const handlePasswordSubmit = async () => {
+ if (!password) return;
+ setShared(undefined);
+ try {
+ const result = await decodeShareParam(encoded, password);
+ if (result) {
+ setShared(result);
+ setPasswordError(false);
+ } else {
+ // GCM authentication failed: wrong passphrase or a tampered link.
+ setShared(null);
+ setPasswordError(true);
+ }
+ } catch {
+ setShared(null);
+ setPasswordError(true);
+ }
+ };
 
  const memoKey = useMemo(() => (shared ? JSON.stringify(shared.values) : ""), [shared]);
  const isWechat = useMemo(() => isWeChatBrowser(), []);
@@ -59,6 +87,45 @@ export function PublicCardView({ encoded }: PublicCardViewProps) {
  const qr = useQrPreview(shared ? shareUrl : null, "#2b4acb", "rounded");
 
  if (shared === undefined) return null;
+ if (!shared && needsPassword) {
+ return (
+ <div className="shell max-w-lg py-16">
+ <form
+ onSubmit={(event) => {
+ event.preventDefault();
+ void handlePasswordSubmit();
+ }}
+ className="panel p-8 text-center shadow-panel"
+ >
+ <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-indigo-soft text-indigo">
+ <Icon name="lock" className="h-6 w-6" />
+ </span>
+ <h1 className="mt-4 text-[26px] font-bold leading-snug text-ink">
+ {t("share.lockTitle")}
+ </h1>
+ <p className="mt-2 text-[13px] leading-relaxed text-muted">{t("share.lockDesc")}</p>
+ <input
+ type="password"
+ value={password}
+ onChange={(event) => setPassword(event.target.value)}
+ placeholder={t("share.lockPlaceholder")}
+ aria-label={t("share.lockPlaceholder")}
+ autoComplete="off"
+ className="field mt-5 text-center"
+ />
+ {passwordError && (
+ <p role="alert" className="mt-3 rounded-lg border-l-2 border-danger bg-danger-soft px-3 py-2 text-[12px] leading-relaxed text-danger">
+ {t("share.lockWrong")}
+ </p>
+ )}
+ <button type="submit" className="btn btn--primary btn--lg w-full mt-4" disabled={!password}>
+ <Icon name="lock" className="h-4 w-4" />
+ {t("share.lockSubmit")}
+ </button>
+ </form>
+ </div>
+ );
+ }
  if (!shared) {
  return (
  <div className="shell max-w-lg py-20">

@@ -10,6 +10,7 @@ import {
 	decodeSharePayload,
 	encodeSharePayload,
 	readShareParam,
+	SharePasswordRequiredError,
 } from "../src/lib/cardShare.ts";
 import { emptyVCard } from "../src/lib/schema.ts";
 
@@ -129,4 +130,46 @@ test("readShareParam understands both new and legacy links", () => {
 	assert.equal(readShareParam({ search: "?v=legacy", hash: "" }), "legacy");
 	assert.equal(readShareParam({ search: "", hash: "#/generator" }), null);
 	assert.equal(readShareParam({ search: "?other=1", hash: "#/?v=new" }), "new");
+});
+
+test("an encrypted share payload round-trips behind the x flag", async () => {
+	const encoded = await encodeSharePayload(SAMPLE, "正-确passphrase 42");
+	assert.ok(encoded.startsWith("x"), "encrypted payloads carry the x flag");
+	const decoded = await decodeSharePayload(encoded, "正-确passphrase 42");
+	assert.ok(decoded);
+	assert.equal(decoded.firstName, "志远");
+	assert.equal(decoded.note, "中英 mixed 🚀");
+});
+
+test("an encrypted link without a passphrase raises the typed error", async () => {
+	const encoded = await encodeSharePayload(SAMPLE, "some-passphrase");
+	await assert.rejects(
+		() => decodeSharePayload(encoded),
+		(error: unknown) => error instanceof SharePasswordRequiredError,
+	);
+	await assert.rejects(() => decodeShareParam(encoded));
+});
+
+test("a wrong passphrase yields null, not a card", async () => {
+	const encoded = await encodeSharePayload(SAMPLE, "right-passphrase");
+	assert.equal(await decodeSharePayload(encoded, "wrong-passphrase"), null);
+	const shared = await decodeShareParam(encoded, "right-passphrase");
+	assert.ok(shared);
+	assert.ok(shared.vcard.includes("FN:林志远"));
+});
+
+test("the encrypted share URL still points at the hash parameter", async () => {
+	const url = await buildShareUrl(SAMPLE, "https://example.com/app/index.html", "passphrase");
+	assert.ok(url.startsWith("https://example.com/app/index.html#/?v=x"));
+	const raw = new URLSearchParams(url.split("?")[1] ?? "").get("v") ?? "";
+	assert.ok(raw.length > 50, "ciphertext carries salt, iv and tag");
+});
+
+test("plain and legacy paths are unaffected by the password branch", async () => {
+	const plain = await encodeSharePayload(SAMPLE);
+	assert.ok(plain.startsWith("d") || plain.startsWith("p"), "no passphrase means no x flag");
+	const decoded = await decodeSharePayload(plain);
+	assert.ok(decoded);
+	const legacy = base64UrlEncode(JSON.stringify({ firstName: "旧链接" }));
+	assert.equal((await decodeSharePayload(legacy))?.firstName, "旧链接");
 });

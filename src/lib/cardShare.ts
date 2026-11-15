@@ -1,4 +1,5 @@
 import { MAX_SHARE_PARAM_LENGTH } from "./constants";
+import { decryptSharePayload, encryptSharePayload } from "./crypto";
 import { emptyVCard, mergeWithDefaults, toVCardData, type VCardFormValues } from "./schema";
 import { isHttpUrl } from "./safety";
 import { createVCard } from "./vcard";
@@ -19,13 +20,15 @@ import type { VCardData } from "./vcardTypes";
  * - Unicode is encoded through TextEncoder, so Chinese names and emoji survive.
  *
  * Payload format:
+ * - `x` + base64url(salt|iv|AES-256-GCM(deflate-raw JSON)) — passphrase-
+ *   encrypted; the passphrase travels out-of-band, never in the link.
  * - `d` + base64url(deflate-raw(JSON)) — deflated, chosen when it is shorter.
  * - `p` + base64url(JSON) — plain, used when CompressionStream is unavailable
  *   or when deflating does not shrink the payload.
  * - Legacy payloads carry no flag byte: base64url of JSON always starts with
- *   `e` (JSON starts with `{`, 0x7b), so a `d`/`p` flag can never collide with
- *   an unprefixed legacy string. Deflating keeps dense cards well below the
- *   hard cap, which directly lowers the QR version of a URL-mode symbol.
+ *   `e` (JSON starts with `{`, 0x7b), so a flag byte can never collide with an
+ *   unprefixed legacy string. Deflating keeps dense cards well below the hard
+ *   cap, which directly lowers the QR version of a URL-mode symbol.
  */
 
 const URL_FIELDS = ["url", "workUrl", "photo", "linkedIn", "twitter"] as const;
@@ -38,6 +41,14 @@ export class SharePayloadError extends Error {
 	constructor(message: "payload-too-long" | "not-encodable") {
 		super(message);
 		this.name = "SharePayloadError";
+	}
+}
+
+/** Raised when an encrypted link is decoded without a passphrase. */
+export class SharePasswordRequiredError extends Error {
+	constructor() {
+		super("password-required");
+		this.name = "SharePasswordRequiredError";
 	}
 }
 
@@ -97,8 +108,8 @@ async function inflateJson(bytes: Uint8Array): Promise<string> {
 	return new TextDecoder().decode(buffer);
 }
 
-/** Serialise only the fields that carry a value, then deflate or base64url them. */
-export async function encodeSharePayload(values: VCardFormValues): Promise<string> {
+/** Serialise only the fields that carry a value, then encrypt, deflate or base64url them. */
+export async function encodeSharePayload(values: VCardFormValues, password?: string): Promise<string> {
 	const payload: Record<string, string> = {};
 	for (const key of SHAREABLE_KEYS) {
 		const raw = values[key];
@@ -107,12 +118,21 @@ export async function encodeSharePayload(values: VCardFormValues): Promise<strin
 		if (trimmed) payload[key] = trimmed;
 	}
 	const json = JSON.stringify(payload);
-	const plain = "p" + base64UrlEncode(json);
-	let encoded = plain;
-	const deflated = await deflateJson(json);
-	if (deflated) {
-		const compressed = "d" + base64UrlFromBytes(deflated);
-		if (compressed.length < plain.length) encoded = compressed;
+	let encoded: string;
+	if (password) {
+		// Encrypted wins outright: silently shipping plaintext when the user
+		// asked for a passphrase would be the worst possible fallback.
+		const envelope = await encryptSharePayload(json, password);
+		if (!envelope) throw new SharePayloadError("not-encodable");
+		encoded = "x" + base64UrlFromBytes(envelope);
+	} else {
+		const plain = "p" + base64UrlEncode(json);
+		encoded = plain;
+		const deflated = await deflateJson(json);
+		if (deflated) {
+			const compressed = "d" + base64UrlFromBytes(deflated);
+			if (compressed.length < plain.length) encoded = compressed;
+		}
 	}
 	if (encoded.length > MAX_SHARE_PARAM_LENGTH) throw new SharePayloadError("payload-too-long");
 	return encoded;
@@ -123,20 +143,29 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 /** Decode the `v` parameter into form values, rejecting anything malformed. */
-export async function decodeSharePayload(raw: string): Promise<VCardFormValues | null> {
+export async function decodeSharePayload(raw: string, password?: string): Promise<VCardFormValues | null> {
 	if (!raw || raw.length > MAX_SHARE_PARAM_LENGTH) return null;
 	let json: string;
-	try {
-		if (raw.startsWith("d")) {
-			json = await inflateJson(base64UrlToBytes(raw.slice(1)));
-		} else if (raw.startsWith("p")) {
-			json = base64UrlDecode(raw.slice(1));
-		} else {
-			// Legacy links created before the flag byte carry the plain JSON.
-			json = base64UrlDecode(raw);
+	if (raw.startsWith("x")) {
+		// Encrypted links must announce the missing passphrase with a typed
+		// error, so the UI can ask for it instead of calling the link broken.
+		if (!password) throw new SharePasswordRequiredError();
+		const decrypted = await decryptSharePayload(base64UrlToBytes(raw.slice(1)), password);
+		if (decrypted === null) return null;
+		json = decrypted;
+	} else {
+		try {
+			if (raw.startsWith("d")) {
+				json = await inflateJson(base64UrlToBytes(raw.slice(1)));
+			} else if (raw.startsWith("p")) {
+				json = base64UrlDecode(raw.slice(1));
+			} else {
+				// Legacy links created before the flag byte carry the plain JSON.
+				json = base64UrlDecode(raw);
+			}
+		} catch {
+			return null;
 		}
-	} catch {
-		return null;
 	}
 	if (json.length > 16_000) return null;
 
@@ -164,9 +193,10 @@ export async function decodeSharePayload(raw: string): Promise<VCardFormValues |
 /**
  * Build the canonical share URL.
  * @param baseUrl Override used by tests; defaults to the current document.
+ * @param password Encrypt the payload when set; the passphrase travels out-of-band.
  */
-export async function buildShareUrl(values: VCardFormValues, baseUrl?: string): Promise<string> {
-	const encoded = await encodeSharePayload(values);
+export async function buildShareUrl(values: VCardFormValues, baseUrl?: string, password?: string): Promise<string> {
+	const encoded = await encodeSharePayload(values, password);
 	const base =
 		baseUrl ??
 		(typeof window === "undefined"
@@ -176,9 +206,12 @@ export async function buildShareUrl(values: VCardFormValues, baseUrl?: string): 
 	return `${clean}#/?v=${encoded}`;
 }
 
-/** Decode a share parameter into form values, render data and a .vcf payload. */
-export async function decodeShareParam(raw: string): Promise<SharedCard | null> {
-	const values = await decodeSharePayload(raw);
+/**
+ * Decode a share parameter into form values, render data and a .vcf payload.
+ * Throws SharePasswordRequiredError for an encrypted link without a passphrase.
+ */
+export async function decodeShareParam(raw: string, password?: string): Promise<SharedCard | null> {
+	const values = await decodeSharePayload(raw, password);
 	if (!values) return null;
 	const data = toVCardData(values);
 	return { values, data, vcard: createVCard(data) };

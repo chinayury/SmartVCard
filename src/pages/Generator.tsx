@@ -104,25 +104,28 @@ export function Generator() {
  const filled = countFilledFields(values);
  const meaningful = filled > 0;
 
- // The share payload may be deflated (an async browser API), so the URL
- // arrives one tick after the values change. "" means "cannot fit" and the
- // panel explains the fallback.
+ // The share payload may be deflated or encrypted (async browser APIs), so the
+ // URL arrives one tick after the values change. "" means "cannot fit" and the
+ // panel explains the fallback. The passphrase never leaves this component and
+ // is not persisted anywhere.
  const [shareUrl, setShareUrl] = useState("");
+ const [sharePassword, setSharePassword] = useState("");
  useEffect(() => {
  let cancelled = false;
  const parsed = JSON.parse(valuesJson) as VCardFormValues;
- buildShareUrl(parsed)
+ buildShareUrl(parsed, undefined, sharePassword || undefined)
  .then((url) => {
  if (!cancelled) setShareUrl(url);
  })
  .catch(() => {
- // Payload cannot fit in a share link; the panel explains the fallback.
+ // Payload cannot fit in a share link (or WebCrypto is missing); the
+ // panel explains the fallback.
  if (!cancelled) setShareUrl("");
  });
  return () => {
  cancelled = true;
  };
- }, [valuesJson]);
+ }, [valuesJson, sharePassword]);
 
  const payload = !meaningful
  ? null
@@ -703,6 +706,8 @@ export function Generator() {
  onSettingsChange={(patch) => setSettings((previous) => sanitizeSettings({ ...previous, ...patch }))}
  shareUrl={shareUrl}
  canShare={Boolean(shareUrl)}
+ sharePassword={sharePassword}
+ onSharePasswordChange={setSharePassword}
  qrStatus={qr.status}
  payloadBytes={qr.bytes}
  exporting={exporting}

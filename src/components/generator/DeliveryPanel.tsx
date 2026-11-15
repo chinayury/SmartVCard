@@ -71,6 +71,8 @@ interface DeliveryControlsProps {
  onSettingsChange: (patch: Partial<StudioSettings>) => void;
  shareUrl: string;
  canShare: boolean;
+ sharePassword: string;
+ onSharePasswordChange: (password: string) => void;
  qrStatus: QrPreviewStatus;
  payloadBytes: number;
  exporting: boolean;
@@ -91,6 +93,8 @@ export function DeliveryControls({
  onSettingsChange,
  shareUrl,
  canShare,
+ sharePassword,
+ onSharePasswordChange,
  qrStatus,
  payloadBytes,
  exporting,
@@ -136,6 +140,24 @@ export function DeliveryControls({
  >
  {settings.mode === "vcard" ? t("qrMode.vcardHint") : t("qrMode.urlHint")}
  </p>
+
+ {settings.mode === "url" && (
+ <div className="mt-4 space-y-2">
+ <label htmlFor="share-password" className="block text-[11px] font-semibold text-muted">
+ {t("preview.sharePasswordLabel")}
+ </label>
+ <input
+ id="share-password"
+ type="password"
+ value={sharePassword}
+ onChange={(event) => onSharePasswordChange(event.target.value)}
+ placeholder={t("preview.sharePasswordPlaceholder")}
+ autoComplete="new-password"
+ className="field"
+ />
+ <p className="text-[11px] leading-relaxed text-muted">{t("preview.sharePasswordHint")}</p>
+ </div>
+ )}
 
  {settings.mode === "url" && canShare && (
  <div className="mt-4 space-y-2">

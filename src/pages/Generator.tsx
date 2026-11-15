@@ -12,6 +12,7 @@ import { useDocumentHead } from "../hooks/useDocumentHead";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useQrPreview } from "../hooks/useQrPreview";
 import { useToast } from "../hooks/useToast";
+import { backupFilename, buildBackupFile, MAX_BACKUP_BYTES, parseBackupFile, type BackupPayload } from "../lib/backup";
 import { buildShareUrl } from "../lib/cardShare";
 import { DRAFT_STORAGE_KEY, LOGO_STORAGE_KEY, MAX_LOGO_BYTES, SETTINGS_STORAGE_KEY } from "../lib/constants";
 import { copyText, copyImageDataUrl, downloadBlob, downloadDataUrl, downloadSvg, downloadText, printCard } from "../lib/download";
@@ -67,9 +68,12 @@ export function Generator() {
  const [savedAt, setSavedAt] = useState<number | null>(null);
  const [resetOpen, setResetOpen] = useState(false);
  const [importOpen, setImportOpen] = useState(false);
+ const [backupOpen, setBackupOpen] = useState(false);
  const [exporting, setExporting] = useState(false);
  const logoFileRef = useRef<HTMLInputElement>(null);
  const logoMigrated = useRef(false);
+ const backupPendingRef = useRef<BackupPayload | null>(null);
+ const backupFileRef = useRef<HTMLInputElement>(null);
 
  const {
  register,
@@ -185,6 +189,50 @@ export function Generator() {
  setSavedAt(null);
  setResetOpen(false);
  toast.push(t("form.resetToast"));
+ };
+
+ // Backup: everything the app persists about this card — draft, logo and QR
+ // settings — as one versioned JSON file; restore goes through the same
+ // sanitising pipeline as the storage keys themselves.
+ const handleExportBackup = () => {
+ downloadText(buildBackupFile(values, logo, settings), backupFilename(), "application/json;charset=utf-8");
+ toast.push(t("form.backupExported"));
+ };
+
+ const handleBackupFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+ const file = event.target.files?.[0];
+ event.target.value = "";
+ if (!file) return;
+ if (file.size > MAX_BACKUP_BYTES) {
+ toast.push(t("form.backupTooLarge"));
+ return;
+ }
+ const reader = new FileReader();
+ reader.onload = () => {
+ const payload = parseBackupFile(String(reader.result ?? ""));
+ if (!payload) {
+ toast.push(t("form.backupInvalid"));
+ return;
+ }
+ backupPendingRef.current = payload;
+ setBackupOpen(true);
+ };
+ reader.onerror = () => toast.push(t("form.backupInvalid"));
+ reader.readAsText(file);
+ };
+
+ const applyBackup = () => {
+ const payload = backupPendingRef.current;
+ backupPendingRef.current = null;
+ setBackupOpen(false);
+ if (!payload) return;
+ reset(payload.draft);
+ setDraft(payload.draft);
+ setLogo(payload.logo);
+ setValue("logoUrl", payload.logo, { shouldDirty: false, shouldValidate: true });
+ setSettings(payload.settings);
+ setSavedAt(Date.now());
+ toast.push(t("form.backupImported"));
  };
 
  const handleLogoFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -353,10 +401,27 @@ export function Generator() {
  <Icon name="upload" className="h-3.5 w-3.5" />
  {t("form.import")}
  </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={handleExportBackup}>
+ <Icon name="download" className="h-3.5 w-3.5" />
+ {t("form.exportBackup")}
+ </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={() => backupFileRef.current?.click()}>
+ <Icon name="upload" className="h-3.5 w-3.5" />
+ {t("form.importBackup")}
+ </button>
  <button type="button" className="btn btn--ghost btn--sm" onClick={() => setResetOpen(true)}>
  <Icon name="reset" className="h-3.5 w-3.5" />
  {t("form.reset")}
  </button>
+ <input
+ ref={backupFileRef}
+ type="file"
+ accept="application/json,.json"
+ onChange={handleBackupFile}
+ className="hidden"
+ aria-hidden="true"
+ tabIndex={-1}
+ />
  </div>
  </div>
 
@@ -666,6 +731,20 @@ export function Generator() {
  />
 
  <ImportDialog open={importOpen} onClose={() => setImportOpen(false)} onSubmit={handleImport} />
+
+ <ConfirmDialog
+ open={backupOpen}
+ eyebrow={t("common.confirmEyebrow")}
+ title={t("form.backupConfirmTitle")}
+ description={t("form.backupConfirmDesc")}
+ confirmLabel={t("form.backupConfirm")}
+ cancelLabel={t("common.cancel")}
+ onConfirm={applyBackup}
+ onCancel={() => {
+ setBackupOpen(false);
+ backupPendingRef.current = null;
+ }}
+ />
  </div>
  );
 }

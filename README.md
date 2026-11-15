@@ -208,6 +208,10 @@ smart-vcard/
 | 变更记录 | [CHANGELOG.md](CHANGELOG.md) |
 | 环境变量说明 | [.env.example](.env.example) |
 
+## 参与贡献
+
+欢迎提交 Issue 与 PR。新增界面语言是低成本贡献点：全部文案集中在 `src/i18n/locales/{zh,en}.json`，中英键位与占位符由自动化测试强制对齐，新增语言只需保持同样的键位结构并补充对应测试数据。不接受引入后端、追踪统计或重量级依赖的改动（见「数据与隐私」）。
+
 ## 许可与信息
 
 开发者：智维ITMSKY  

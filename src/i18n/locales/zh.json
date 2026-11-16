@@ -251,6 +251,10 @@
  "vcard": "原生 vCard",
  "url": "网页链接",
  "vcardHint": "微信扫码器无法识别 vCard 二维码。仅当对方用 iOS / 安卓系统相机扫码时才选这项。",
+ "formatLabel": "联系人载荷格式",
+ "formatVcard": "vCard",
+ "formatMecard": "MeCard",
+ "formatHint": "MeCard 是 DoCoMo 紧凑格式：不含公司 / 职位等字段，同样内容生成的二维码更稀疏、更易扫；vCard 保留全部字段。仅在系统相机扫码时生效（微信两种都不读）。",
  "urlHint": "聊天工具扫码会打开本页，点一下即可保存联系人。发给微信好友、印在名片上都合适。"
  },
  "import": {

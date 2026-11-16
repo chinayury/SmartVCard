@@ -143,6 +143,22 @@ export function DeliveryControls({
  {settings.mode === "vcard" ? t("qrMode.vcardHint") : t("qrMode.urlHint")}
  </p>
 
+ {settings.mode === "vcard" && (
+ <div className="mt-4 space-y-2">
+ <p className="text-[11px] font-semibold text-muted">{t("qrMode.formatLabel")}</p>
+ <Segmented
+ value={settings.payloadFormat}
+ ariaLabel={t("qrMode.formatLabel")}
+ onChange={(payloadFormat) => onSettingsChange({ payloadFormat })}
+ options={[
+ { value: "vcard", label: t("qrMode.formatVcard") },
+ { value: "mecard", label: t("qrMode.formatMecard") },
+ ]}
+ />
+ <p className="text-[11px] leading-relaxed text-muted">{t("qrMode.formatHint")}</p>
+ </div>
+ )}
+
  {settings.mode === "url" && (
  <div className="mt-4 space-y-2">
  <label htmlFor="share-password" className="block text-[11px] font-semibold text-muted">

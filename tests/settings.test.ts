@@ -11,14 +11,20 @@ test("returns defaults for anything that is not an object", () => {
 
 test("keeps a fully valid settings object", () => {
  assert.deepEqual(
- sanitizeSettings({ mode: "vcard", color: "#B04A24", style: "dots", size:2048 }),
- { mode: "vcard", color: "#b04a24", style: "dots", size:2048 },
+ sanitizeSettings({ mode: "vcard", payloadFormat: "mecard", color: "#B04A24", style: "dots", size:2048 }),
+ { mode: "vcard", payloadFormat: "mecard", color: "#b04a24", style: "dots", size:2048 },
  );
+});
+
+test("an old settings object without payloadFormat falls back to vcard", () => {
+ const result = sanitizeSettings({ mode: "vcard", color: "#16213a", style: "square", size:512 });
+ assert.equal(result.payloadFormat, "vcard");
 });
 
 test("replaces each invalid field independently", () => {
  const result = sanitizeSettings({
  mode: "print",
+ payloadFormat: "json",
  color: "red",
  style: "zigzag",
  size:999,

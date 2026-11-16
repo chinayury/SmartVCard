@@ -2,6 +2,27 @@
 
 本文件只追加，不修改历史记录。
 
+## [0.5.0] —2026-11-17（每周维护轮：MeCard 载荷格式）
+
+###变更类型：新增用户可见功能（minor）
+
+> 本轮为第五次自动化每周维护循环。主打落地 2026-11-14 调研 backlog 中的 M5（来源 rclement/business-card-generator 的双格式思路）：vCard 模式新增 MeCard（DoCoMo 紧凑格式）选项——同一名片的二维码载荷实测从 108 B 降至 40 B（-63%），二维码版本更低、更稀疏、更易扫。
+
+###新增
+
+- **MeCard 联系人载荷**：交付台「QR 载荷」区在 Raw vCard 模式下新增格式切换（vCard / MeCard）。`src/lib/mecard.ts` 按 DoCoMo 规范实现：`MECARD:N:姓,名;…;;` 终止符、N 姓在前、TEL/EMAIL 可重复、ADR 沿用 vCard 分量顺序（残缺地址仍不写）、BDAY 为 YYYYMMDD、结构字符 `\,` `\;` `\\` 转义、换行拍平。
+- 诚实取舍：MeCard 无 ORG/TITLE/company 字段——UI 提示明示「MeCard 不含公司/职位，同内容二维码更稀疏；vCard 保留全部字段」；设置持久化经 sanitizeSettings，旧配置无该字段时回退 vCard。
+
+###变更
+
+- `StudioSettings` 新增 `payloadFormat`（默认 `vcard`，与历史行为逐字节兼容）；`Generator` 按该设置选择 `createMeCard` / `createVCardForQr` 生成联系人模式二维码。
+
+###验证
+
+- 本地：`npm run verify` 全绿——lint 0 告警、build 成功、测试 **134/134**（127 → 134：DoCoMo 线格式与终止符、org/title 有意省略、结构字符转义与换行拍平、残缺地址不写、极简卡、jsQR 逐字节解码回环、settings payloadFormat 清洗与旧配置回退）。
+- 浏览器实测（Chromium + vite preview）：格式切换器随 Raw vCard 模式渲染；切 MeCard 后载荷计数 108 B → 40 B、QR Ready、`payloadFormat: "mecard"` 持久化；切回 vCard 恢复 108 B。
+- `npm audit --omit=dev`（官方 registry）→ **0 漏洞**；敏感扫描 0 命中。
+
 ## [0.4.0] —2026-11-17（每周维护轮：CR80 实体名片打印模板）
 
 ###变更类型：新增用户可见功能（minor）

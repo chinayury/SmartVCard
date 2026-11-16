@@ -251,6 +251,10 @@
  "vcard": "Raw vCard",
  "url": "Web link",
  "vcardHint": "WeChat's scanner cannot read vCard QR codes. Use this only when recipients scan with the iOS or Android camera.",
+ "formatLabel": "Contact payload format",
+ "formatVcard": "vCard",
+ "formatMecard": "MeCard",
+ "formatHint": "MeCard is DoCoMo's compact flavour: it carries no company or title, so the same card yields a sparser, easier-to-scan symbol; vCard keeps every field. Only system cameras read either — WeChat reads neither.",
  "urlHint": "Chat apps open this page, where one tap saves the contact. Best for WeChat and printed cards."
  },
  "import": {

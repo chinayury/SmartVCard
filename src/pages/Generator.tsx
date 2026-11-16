@@ -20,6 +20,7 @@ import { renderQrPng, renderQrSvg } from "../lib/qr";
 import { renderCardPdf } from "../lib/pdf";
 import { isSafeImageSource } from "../lib/safety";
 import { buildCardSheetHtml, printCardSheet } from "../lib/printSheet";
+import { createMeCard } from "../lib/mecard";
 import {
  countFilledFields,
  emptyVCard,
@@ -99,9 +100,12 @@ export function Generator() {
  const previewKey = JSON.stringify(vcardData);
  // Two shapes of the same card: the .vcf/copy form is conservative (CRLF,
  // 75-octet folding); the QR form is compact (LF, unfolded) so a long card
- // stays a lower QR version and therefore scans more reliably.
+ // stays a lower QR version and therefore scans more reliably. MeCard is the
+ // optional sparser contact flavour — it drops org/title, which the QR never
+ // carried well anyway.
  const vcardString = createVCard(vcardData);
- const qrVcardString = createVCardForQr(vcardData);
+ const qrVcardString =
+ settings.payloadFormat === "mecard" ? createMeCard(vcardData) : createVCardForQr(vcardData);
  const filled = countFilledFields(values);
  const meaningful = filled > 0;
 

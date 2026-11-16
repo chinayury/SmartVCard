@@ -9,9 +9,12 @@ import {
 import type { QrModuleStyle } from "./qr";
 
 export type QrMode = "url" | "vcard";
+export type QrPayloadFormat = "vcard" | "mecard";
 
 export interface StudioSettings {
  mode: QrMode;
+ /** Contact payload flavour when mode is "vcard"; MeCard trades fields for a sparser symbol. */
+ payloadFormat: QrPayloadFormat;
  color: string;
  style: QrModuleStyle;
  size: QrExportSize;
@@ -19,6 +22,7 @@ export interface StudioSettings {
 
 export const DEFAULT_SETTINGS: StudioSettings = {
  mode: "url",
+ payloadFormat: "vcard",
  color: DEFAULT_QR_COLOR,
  style: DEFAULT_QR_STYLE,
  size: DEFAULT_QR_SIZE,
@@ -33,6 +37,8 @@ export function sanitizeSettings(raw: unknown, fallback: StudioSettings = DEFAUL
  if (!isRecord(raw)) return fallback;
 
  const mode = raw.mode === "vcard" || raw.mode === "url" ? raw.mode : fallback.mode;
+ const payloadFormat =
+ raw.payloadFormat === "vcard" || raw.payloadFormat === "mecard" ? raw.payloadFormat : fallback.payloadFormat;
  const color =
  typeof raw.color === "string" && /^#[0-9a-f]{6}$/i.test(raw.color)
  ? raw.color.toLowerCase()
@@ -44,5 +50,5 @@ export function sanitizeSettings(raw: unknown, fallback: StudioSettings = DEFAUL
  ? (raw.size as QrExportSize)
  : fallback.size;
 
- return { mode, color, style, size };
+ return { mode, payloadFormat, color, style, size };
 }

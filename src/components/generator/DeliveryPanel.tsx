@@ -81,6 +81,7 @@ interface DeliveryControlsProps {
  onDownloadSvg: () => void;
  onDownloadPdf: () => void;
  onPrint: () => void;
+ onPrintCardSheet: () => void;
  onCopyVcard: () => void;
  onCopyQrImage: () => void;
  onCopyLink: () => void;
@@ -103,6 +104,7 @@ export function DeliveryControls({
  onDownloadSvg,
  onDownloadPdf,
  onPrint,
+ onPrintCardSheet,
  onCopyVcard,
  onCopyQrImage,
  onCopyLink,
@@ -155,6 +157,11 @@ export function DeliveryControls({
  autoComplete="new-password"
  className="field"
  />
+ {sharePassword.length > 0 && sharePassword.length < 8 && (
+ <p role="status" className="text-[11px] leading-relaxed text-amber">
+ {t("preview.sharePasswordWeak")}
+ </p>
+ )}
  <p className="text-[11px] leading-relaxed text-muted">{t("preview.sharePasswordHint")}</p>
  </div>
  )}
@@ -289,6 +296,10 @@ export function DeliveryControls({
  <button type="button" className="btn btn--outline btn--sm" onClick={onPrint} disabled={disabled}>
  <Icon name="print" className="h-4 w-4" />
  {t("preview.print")}
+ </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={onPrintCardSheet} disabled={disabled}>
+ <Icon name="print" className="h-4 w-4" />
+ {t("preview.printCardSheet")}
  </button>
  </div>
 

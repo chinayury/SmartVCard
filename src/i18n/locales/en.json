@@ -200,6 +200,9 @@
  "sharePasswordLabel": "Link passphrase (optional)",
  "sharePasswordPlaceholder": "Leave empty for an unencrypted link",
  "sharePasswordHint": "With a passphrase set, recipients must enter it before the card shows. Hand it over in person or over a different channel — never with the link itself. A leaked link stays unreadable while the passphrase stays secret.",
+ "sharePasswordWeak": "Short passphrase: 8+ characters recommended.",
+ "printCardSheet": "Print wallet card (CR80)",
+ "printSheetFailed": "The print sheet could not be created. Try again.",
  "styleLabel": "Module style",
  "styles": {
  "square": "Square",

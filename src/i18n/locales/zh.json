@@ -200,6 +200,9 @@
  "sharePasswordLabel": "链接口令（可选）",
  "sharePasswordPlaceholder": "留空则链接不加密",
  "sharePasswordHint": "设置后，对方需输入口令才能查看名片。口令请当面或另行告知，切勿与链接同渠道发送——链接泄露但口令未泄露时，名片内容仍是加密的。",
+ "sharePasswordWeak": "口令偏短：建议至少 8 个字符。",
+ "printCardSheet": "打印实体名片（CR80）",
+ "printSheetFailed": "打印页生成失败，请重试。",
  "styleLabel": "模块样式",
  "styles": {
  "square": "方块",

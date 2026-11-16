@@ -19,6 +19,7 @@ import { copyText, copyImageDataUrl, downloadBlob, downloadDataUrl, downloadSvg,
 import { renderQrPng, renderQrSvg } from "../lib/qr";
 import { renderCardPdf } from "../lib/pdf";
 import { isSafeImageSource } from "../lib/safety";
+import { buildCardSheetHtml, printCardSheet } from "../lib/printSheet";
 import {
  countFilledFields,
  emptyVCard,
@@ -328,6 +329,17 @@ export function Generator() {
  }
  } catch {
  toast.push(t("preview.pngFailed"));
+ }
+ };
+
+  const handlePrintCardSheet = () => {
+ if (!payload) return;
+ try {
+ // A wallet-size CR80 sheet in a hidden iframe: the card prints at true
+ // physical size, isolated from the app's own print stylesheet.
+ printCardSheet(buildCardSheetHtml({ qrSvg: renderQrSvg(payload, qrOptions), data: vcardData }));
+ } catch {
+ toast.push(t("preview.printSheetFailed"));
  }
  };
 
@@ -716,6 +728,7 @@ export function Generator() {
  onDownloadSvg={handleDownloadSvg}
  onDownloadPdf={() => void handleDownloadPdf()}
  onPrint={printCard}
+ onPrintCardSheet={handlePrintCardSheet}
  onCopyVcard={() => void handleCopyVcard()}
  onCopyQrImage={() => void handleCopyQrImage()}
  onCopyLink={() => void handleCopyLink()}

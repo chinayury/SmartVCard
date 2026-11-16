@@ -175,7 +175,7 @@ smart-vcard/
 | 命令 | 用途 |
 |---|---|
 | `npm run dev` | 启动开发服务 |
-| `npm test` | 运行全部测试（122 项） |
+| `npm test` | 运行全部测试（127 项） |
 | `npm run test:watch` | 监听模式跑测试 |
 | `npm run lint` | ESLint 静态检查 |
 | `npm run typecheck` | TypeScript 类型检查 |
@@ -187,7 +187,7 @@ smart-vcard/
 
 ## 质量基线
 
-- 测试 **122/122** 通过（vcard / vcardParse / roundTrip / qr / qrDecode / schema / settings / text / i18n / security / cardShare / backup / crypto）。
+- 测试 **127/127** 通过（vcard / vcardParse / roundTrip / qr / qrDecode / schema / settings / text / i18n / security / cardShare / backup / crypto / printSheet）。
 - `tsc -b` 与 `eslint .` 零告警。
 - 生产依赖 `npm audit --omit=dev` **0 漏洞**。
 - 质量门禁本地复现：`npm run verify`。

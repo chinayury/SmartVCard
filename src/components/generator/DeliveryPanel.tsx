@@ -82,6 +82,7 @@ interface DeliveryControlsProps {
  onDownloadPdf: () => void;
  onPrint: () => void;
  onPrintCardSheet: () => void;
+ onExportHtmlCard: () => void;
  onCopyVcard: () => void;
  onCopyQrImage: () => void;
  onCopyLink: () => void;
@@ -105,6 +106,7 @@ export function DeliveryControls({
  onDownloadPdf,
  onPrint,
  onPrintCardSheet,
+ onExportHtmlCard,
  onCopyVcard,
  onCopyQrImage,
  onCopyLink,
@@ -316,6 +318,10 @@ export function DeliveryControls({
  <button type="button" className="btn btn--outline btn--sm" onClick={onPrintCardSheet} disabled={disabled}>
  <Icon name="print" className="h-4 w-4" />
  {t("preview.printCardSheet")}
+ </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={onExportHtmlCard} disabled={disabled}>
+ <Icon name="file-text" className="h-4 w-4" />
+ {t("preview.htmlCard")}
  </button>
  </div>
 

@@ -203,6 +203,8 @@
  "sharePasswordWeak": "口令偏短：建议至少 8 个字符。",
  "printCardSheet": "打印实体名片（CR80）",
  "printSheetFailed": "打印页生成失败，请重试。",
+ "htmlCard": "导出网页名片",
+ "htmlCardReady": "网页名片已导出（单文件，可离线打开）。",
  "styleLabel": "模块样式",
  "styles": {
  "square": "方块",
@@ -276,7 +278,8 @@
  "logoAlt": "公司 Logo",
  "qrAlt": "这张名片的二维码",
  "scan": "扫码",
- "tagline": "扫一次，常联系。"
+ "tagline": "扫一次，常联系。",
+ "revealContacts": "显示联系方式"
  },
  "share": {
  "overline": "分享名片",

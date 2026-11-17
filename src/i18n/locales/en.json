@@ -203,6 +203,8 @@
  "sharePasswordWeak": "Short passphrase: 8+ characters recommended.",
  "printCardSheet": "Print wallet card (CR80)",
  "printSheetFailed": "The print sheet could not be created. Try again.",
+ "htmlCard": "Export web card",
+ "htmlCardReady": "Web card exported (a single file, opens offline).",
  "styleLabel": "Module style",
  "styles": {
  "square": "Square",
@@ -276,7 +278,8 @@
  "logoAlt": "Company logo",
  "qrAlt": "QR code for this contact",
  "scan": "Scan",
- "tagline": "Scan once, keep in touch."
+ "tagline": "Scan once, keep in touch.",
+ "revealContacts": "Show contact details"
  },
  "share": {
  "overline": "Shared card",

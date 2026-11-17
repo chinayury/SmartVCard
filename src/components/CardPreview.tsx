@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Icon } from "./Icon";
-import { brandLabel, formatAddressLine, formatFullName, hasCJK, monogram, truncateMiddle } from "../lib/text";
+import { brandLabel, formatAddressLine, formatFullName, hasCJK, maskEmail, maskPhone, monogram, truncateMiddle } from "../lib/text";
 import type { VCardData } from "../lib/vcardTypes";
 
 interface CardPreviewProps {
@@ -13,6 +13,12 @@ interface CardPreviewProps {
   * preview skips re-renders when nothing visible changed.
   */
  memoKey: string;
+ /**
+  * Recipient-facing privacy (swiish's trio, item two): personal contact rows
+  * render masked until the recipient reveals them. The studio always passes
+  * false — only the shared-card view masks.
+  */
+ maskContacts?: boolean;
 }
 
 const CARD_FONT =
@@ -35,13 +41,15 @@ function ContactRow({ label, value }: { label: string; value: string }) {
  * No gradients and no decorative blobs, so it prints cleanly and stays
  * readable at small sizes.
  */
-function CardPreview({ data, qrSrc }: CardPreviewProps) {
+function CardPreview({ data, qrSrc, maskContacts = false }: CardPreviewProps) {
  const { t } = useTranslation();
  const [logoBroken, setLogoBroken] = useState(false);
+ const [revealed, setRevealed] = useState(false);
 
  useEffect(() => {
  setLogoBroken(false);
- }, [data.logoUrl]);
+ setRevealed(false);
+ }, [data.logoUrl, maskContacts]);
 
  const chinese = hasCJK(data.lastName) || hasCJK(data.firstName);
  const fullName = formatFullName(data);
@@ -52,6 +60,7 @@ function CardPreview({ data, qrSrc }: CardPreviewProps) {
  const phone = data.cellPhone || data.workPhone || "";
  const email = data.email || data.workEmail || "";
  const website = data.url || data.workUrl || "";
+ const hidePersonal = maskContacts && !revealed;
 
  return (
  <div
@@ -128,9 +137,18 @@ function CardPreview({ data, qrSrc }: CardPreviewProps) {
 
  {/* Contact lines */}
  <div className="mt-4 space-y-2">
- {phone && <ContactRow label="TEL" value={phone} />}
- {email && <ContactRow label="MAIL" value={truncateMiddle(email, 30)} />}
+ {phone && <ContactRow label="TEL" value={hidePersonal ? maskPhone(phone) : phone} />}
+ {email && <ContactRow label="MAIL" value={hidePersonal ? maskEmail(truncateMiddle(email, 30)) : truncateMiddle(email, 30)} />}
  {website && <ContactRow label="WEB" value={truncateMiddle(website.replace(/^https?:\/\//i, ""), 32)} />}
+ {hidePersonal && (phone || email) && (
+ <button
+ type="button"
+ onClick={() => setRevealed(true)}
+ className="self-start text-[11px] font-semibold text-indigo transition-colors hover:text-indigo-deep"
+ >
+ {t("card.revealContacts")}
+ </button>
+ )}
  </div>
 
  {/* Footer: slogan + QR plate */}
@@ -178,5 +196,9 @@ function CardPreview({ data, qrSrc }: CardPreviewProps) {
  * re-render.
  */
 export default memo(CardPreview, (previous, next) => {
- return previous.memoKey === next.memoKey && previous.qrSrc === next.qrSrc;
+ return (
+ previous.memoKey === next.memoKey &&
+ previous.qrSrc === next.qrSrc &&
+ previous.maskContacts === next.maskContacts
+ );
 });

@@ -103,3 +103,23 @@ export function truncateMiddle(value: string, max: number): string {
  const tail = Math.floor((max -1) /2);
  return `${value.slice(0, head)}…${value.slice(value.length - tail)}`;
 }
+
+/**
+ * Recipient-facing masking (borrowed from swiish's privacy trio): the shared
+ * card hides personal contact details behind shoulder-surfing- and
+ * scraper-proof placeholders until the recipient asks to see them.
+ */
+
+/** Keep the first three and last two characters; the middle becomes asterisks. */
+export function maskPhone(value: string): string {
+ if (value.length <= 6) return "*".repeat(value.length);
+ return `${value.slice(0,3)}${"*".repeat(value.length -5)}${value.slice(-2)}`;
+}
+
+/** Keep the first character of the local part and the whole domain. */
+export function maskEmail(value: string): string {
+ const at = value.indexOf("@");
+ if (at <=0) return "*".repeat(Math.min(value.length,8));
+ const local = value.slice(0, at);
+ return `${local[0]}${"*".repeat(Math.max(local.length -1,1))}${value.slice(at)}`;
+}

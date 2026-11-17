@@ -6,6 +6,8 @@ import {
  formatAddressLine,
  formatFullName,
  hasCJK,
+ maskEmail,
+ maskPhone,
  monogram,
  sanitizeFilename,
  stripControlChars,
@@ -80,4 +82,16 @@ test("truncateMiddle keeps both ends", () => {
 test("stripControlChars removes tabs and keeps newlines", () => {
  assert.equal(stripControlChars("a\u0007b\u0009c"), "abc");
  assert.equal(stripControlChars("line1\nline2"), "line1\nline2");
+});
+
+test("maskPhone keeps the edges and hides the middle", () => {
+ assert.equal(maskPhone("+8613800138000"), "+86*********00");
+ assert.equal(maskPhone("123456"), "******");
+ assert.equal(maskPhone("123"), "***");
+});
+
+test("maskEmail keeps the initial and the domain", () => {
+ assert.equal(maskEmail("hello@example.com"), "h****@example.com");
+ assert.equal(maskEmail("a@b.co"), "a*@b.co");
+ assert.equal(maskEmail("not-an-email"), "********");
 });

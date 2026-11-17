@@ -139,7 +139,7 @@ export function Generator() {
  ? shareUrl || null
  : qrVcardString;
 
- const qr = useQrPreview(payload, settings.color, settings.style);
+ const qr = useQrPreview(payload, settings.color, settings.style, settings.ecLevel);
 
  // Auto-save the draft (logo excluded: it lives in its own storage key).
  useEffect(() => {
@@ -291,7 +291,7 @@ export function Generator() {
  return null;
  };
 
- const qrOptions = { color: settings.color, style: settings.style, margin:4 };
+ const qrOptions = { color: settings.color, style: settings.style, margin:4, errorCorrectionLevel: settings.ecLevel };
 
  const handleDownloadVcf = () => {
  downloadText(vcardString, `${fileBase}.vcf`, "text/vcard;charset=utf-8");

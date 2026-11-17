@@ -29,6 +29,7 @@ export function useQrPreview(
  payload: string | null,
  color: string,
  style: QrModuleStyle,
+ errorCorrectionLevel: "L" | "M" | "Q" | "H" = "M",
  debounceMs =220,
 ): QrPreviewState {
  const [state, setState] = useState<QrPreviewState>({ src: null, status: "empty", bytes:0 });
@@ -42,7 +43,7 @@ export function useQrPreview(
  let cancelled = false;
  const timer = window.setTimeout(() => {
  try {
- const svg = renderQrSvg(payload, { color, style, margin:4 });
+ const svg = renderQrSvg(payload, { color, style, margin:4, errorCorrectionLevel });
  if (cancelled) return;
  setState({
  src: svgToDataUrl(svg),
@@ -63,7 +64,7 @@ export function useQrPreview(
  cancelled = true;
  window.clearTimeout(timer);
  };
- }, [payload, color, style, debounceMs]);
+ }, [payload, color, style, errorCorrectionLevel, debounceMs]);
 
  return state;
 }

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 
 import {
  brandLabel,
+ contactHref,
  formatAddressLine,
  formatFullName,
  hasCJK,
@@ -94,4 +95,14 @@ test("maskEmail keeps the initial and the domain", () => {
  assert.equal(maskEmail("hello@example.com"), "h****@example.com");
  assert.equal(maskEmail("a@b.co"), "a*@b.co");
  assert.equal(maskEmail("not-an-email"), "********");
+});
+
+test("contactHref builds safe action links or returns null", () => {
+ assert.equal(contactHref("TEL", "+86 138 0013 8000"), "tel:+8613800138000");
+ assert.equal(contactHref("TEL", "ab"), null, "too short to dial");
+ assert.equal(contactHref("MAIL", "hello@example.com"), "mailto:hello@example.com");
+ assert.equal(contactHref("MAIL", "not-an-email"), null);
+ assert.equal(contactHref("WEB", "https://example.com"), "https://example.com");
+ assert.equal(contactHref("WEB", "example.com"), null, "scheme-less web rows stay text");
+ assert.equal(contactHref("OTHER", "x"), null);
 });

@@ -123,3 +123,24 @@ export function maskEmail(value: string): string {
  const local = value.slice(0, at);
  return `${local[0]}${"*".repeat(Math.max(local.length -1,1))}${value.slice(at)}`;
 }
+
+/**
+ * One-tap contact actions on the recipient-facing card (EnBizCard's action-row
+ * idea, trimmed to what a static page can do safely). Returns the href for a
+ * card contact row, or null when the row should stay plain text.
+ */
+export function contactHref(label: string, value: string): string | null {
+ const trimmed = value.trim();
+ if (!trimmed) return null;
+ if (label === "TEL") {
+ const digits = trimmed.replace(/[^\d+]/g, "");
+ return digits.length >= 3 ? `tel:${digits}` : null;
+ }
+ if (label === "MAIL") {
+ return /^[\w.+-]+@[\w.-]+\.\w{2,}$/.test(trimmed) ? `mailto:${trimmed}` : null;
+ }
+ if (label === "WEB") {
+ return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+ }
+ return null;
+}

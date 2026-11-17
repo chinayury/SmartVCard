@@ -183,7 +183,7 @@ export function PublicCardView({ encoded }: PublicCardViewProps) {
  </div>
 
  <div className="rounded-b-[14px] border border-line bg-surface p-6 shadow-panel">
- <CardPreview data={data} qrSrc={qr.src} memoKey={memoKey} maskContacts />
+ <CardPreview data={data} qrSrc={qr.src} memoKey={memoKey} maskContacts actionable />
  </div>
 
  <div className="mt-6 space-y-3">

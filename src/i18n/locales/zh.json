@@ -220,6 +220,8 @@
  "black": "纯黑"
  },
  "customColor": "自定义",
+ "ecLabel": "纠错等级",
+ "ecHint": "L → H 耐污损能力递增，符号也更密。屏幕分享用 M 即可；打印实体名片建议 Q 或 H（耐刮擦）。",
  "sizeLabel": "PNG 尺寸",
  "downloadVcf": "下载 .vcf",
  "downloadPng": "下载 PNG",

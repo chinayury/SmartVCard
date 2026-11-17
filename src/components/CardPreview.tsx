@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Icon } from "./Icon";
-import { brandLabel, formatAddressLine, formatFullName, hasCJK, maskEmail, maskPhone, monogram, truncateMiddle } from "../lib/text";
+import { brandLabel, contactHref, formatAddressLine, formatFullName, hasCJK, maskEmail, maskPhone, monogram, truncateMiddle } from "../lib/text";
 import type { VCardData } from "../lib/vcardTypes";
 
 interface CardPreviewProps {
@@ -19,18 +19,36 @@ interface CardPreviewProps {
   * false — only the shared-card view masks.
   */
  maskContacts?: boolean;
+ /**
+  * Recipient-facing one-tap actions (EnBizCard's action-row idea): TEL/MAIL/WEB
+  * rows become tappable links once revealed. The studio renders plain text.
+  */
+ actionable?: boolean;
 }
 
 const CARD_FONT =
  '"Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif';
 
-function ContactRow({ label, value }: { label: string; value: string }) {
+function ContactRow({ label, value, href }: { label: string; value: string; href?: string | null }) {
+ const text = (
+ <span className="truncate text-[12.5px] leading-normal text-ink-soft">{value}</span>
+ );
  return (
  <div className="flex items-center gap-3 border-b border-line/70 pb-1.5">
  <span className="w-11 shrink-0 rounded-md border border-line bg-canvas px-1.5 py-0.5 text-center font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-muted">
  {label}
  </span>
- <span className="truncate text-[12.5px] leading-normal text-ink-soft">{value}</span>
+ {href ? (
+ <a
+ href={href}
+ className="min-w-0 flex-1 truncate text-[12.5px] leading-normal text-ink-soft transition-colors hover:text-indigo"
+ {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+ >
+ {text}
+ </a>
+ ) : (
+ text
+ )}
  </div>
  );
 }
@@ -41,7 +59,7 @@ function ContactRow({ label, value }: { label: string; value: string }) {
  * No gradients and no decorative blobs, so it prints cleanly and stays
  * readable at small sizes.
  */
-function CardPreview({ data, qrSrc, maskContacts = false }: CardPreviewProps) {
+function CardPreview({ data, qrSrc, maskContacts = false, actionable = false }: CardPreviewProps) {
  const { t } = useTranslation();
  const [logoBroken, setLogoBroken] = useState(false);
  const [revealed, setRevealed] = useState(false);
@@ -137,9 +155,27 @@ function CardPreview({ data, qrSrc, maskContacts = false }: CardPreviewProps) {
 
  {/* Contact lines */}
  <div className="mt-4 space-y-2">
- {phone && <ContactRow label="TEL" value={hidePersonal ? maskPhone(phone) : phone} />}
- {email && <ContactRow label="MAIL" value={hidePersonal ? maskEmail(truncateMiddle(email, 30)) : truncateMiddle(email, 30)} />}
- {website && <ContactRow label="WEB" value={truncateMiddle(website.replace(/^https?:\/\//i, ""), 32)} />}
+ {phone && (
+ <ContactRow
+ label="TEL"
+ value={hidePersonal ? maskPhone(phone) : phone}
+ href={actionable && !hidePersonal ? contactHref("TEL", phone) : null}
+ />
+ )}
+ {email && (
+ <ContactRow
+ label="MAIL"
+ value={hidePersonal ? maskEmail(truncateMiddle(email, 30)) : truncateMiddle(email, 30)}
+ href={actionable && !hidePersonal ? contactHref("MAIL", email) : null}
+ />
+ )}
+ {website && (
+ <ContactRow
+ label="WEB"
+ value={truncateMiddle(website.replace(/^https?:\/\//i, ""), 32)}
+ href={actionable ? contactHref("WEB", website) : null}
+ />
+ )}
  {hidePersonal && (phone || email) && (
  <button
  type="button"
@@ -199,6 +235,7 @@ export default memo(CardPreview, (previous, next) => {
  return (
  previous.memoKey === next.memoKey &&
  previous.qrSrc === next.qrSrc &&
- previous.maskContacts === next.maskContacts
+ previous.maskContacts === next.maskContacts &&
+ previous.actionable === next.actionable
  );
 });

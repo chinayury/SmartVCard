@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import CardPreview from "../CardPreview";
 import { Icon } from "../Icon";
 import { Segmented } from "../Segmented";
-import { QR_COLOR_PRESETS, QR_EXPORT_SIZES } from "../../lib/constants";
+import { QR_COLOR_PRESETS, QR_EC_LEVELS, QR_EXPORT_SIZES } from "../../lib/constants";
 import type { QrModuleStyle } from "../../lib/qr";
 import type { QrPreviewStatus } from "../../hooks/useQrPreview";
 import type { StudioSettings } from "../../lib/settings";
@@ -262,6 +262,20 @@ export function DeliveryControls({
  {t("preview.customColor")}
  </label>
  </div>
+
+ <p className="mt-5 flex items-center gap-1.5 text-[13px] font-bold text-ink">
+ <Icon name="spark" className="h-4 w-4 text-indigo" />
+ {t("preview.ecLabel")}
+ </p>
+ <div className="mt-3">
+ <Segmented
+ value={settings.ecLevel}
+ ariaLabel={t("preview.ecLabel")}
+ onChange={(ecLevel) => onSettingsChange({ ecLevel })}
+ options={QR_EC_LEVELS.map((level) => ({ value: level, label: level }))}
+ />
+ </div>
+ <p className="mt-2 text-[11px] leading-relaxed text-muted">{t("preview.ecHint")}</p>
  </section>
 
  {/*03 — Export */}

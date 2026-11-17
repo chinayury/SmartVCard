@@ -220,6 +220,8 @@
  "black": "Black"
  },
  "customColor": "Custom",
+ "ecLabel": "Error correction",
+ "ecHint": "L → H survives more damage but densifies the symbol. M is right for screens; printed wallet cards benefit from Q or H (scratch resistance).",
  "sizeLabel": "PNG size",
  "downloadVcf": "Download .vcf",
  "downloadPng": "Download PNG",

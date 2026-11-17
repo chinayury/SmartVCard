@@ -186,3 +186,13 @@ test("a dense symbol is exported larger so it still scans", () => {
   assert.equal(light.raised, false);
   assert.equal(light.size, 512);
 });
+
+test("error-correction levels trade density for damage tolerance as specified", () => {
+  const payload = "MECARD:N:林,志远;TEL:+8613800138000;EMAIL:hello@example.com;;";
+  const sizes = (["L", "M", "Q", "H"] as const).map((level) => buildQrMatrix(payload, { style: "square", errorCorrectionLevel: level }).size);
+  assert.ok(sizes[0] < sizes[1], "L is sparser than M");
+  assert.ok(sizes[1] < sizes[2], "M is sparser than Q");
+  assert.ok(sizes[2] <= sizes[3], "H is the densest");
+  // The default level stays M, matching every historical symbol.
+  assert.equal(buildQrMatrix(payload, { style: "square" }).size, sizes[1]);
+});

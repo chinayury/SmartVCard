@@ -46,6 +46,14 @@ export const QR_COLOR_PRESETS: readonly QrColorPreset[] = [
 export const QR_MODULE_STYLES: readonly QrModuleStyle[] = ["square", "rounded", "dots"];
 
 /**
+ * QR error-correction levels (ISO/IEC 18004). Higher levels survive more
+ * damage — scuffed wallet cards, faded prints — at the cost of a denser
+ * symbol. M is the default everywhere and matches historical behaviour.
+ */
+export const QR_EC_LEVELS = ["L", "M", "Q", "H"] as const;
+export type QrEcLevel = (typeof QR_EC_LEVELS)[number];
+
+/**
  * Minimum raster pixels per QR module for a reliable scan.
  *
  * ISO/IEC 18004 sets 4px/module as the floor; real phone cameras and decoders

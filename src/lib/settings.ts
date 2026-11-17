@@ -2,8 +2,10 @@ import {
  DEFAULT_QR_COLOR,
  DEFAULT_QR_SIZE,
  DEFAULT_QR_STYLE,
+ QR_EC_LEVELS,
  QR_EXPORT_SIZES,
  QR_MODULE_STYLES,
+ type QrEcLevel,
  type QrExportSize,
 } from "./constants";
 import type { QrModuleStyle } from "./qr";
@@ -17,6 +19,8 @@ export interface StudioSettings {
  payloadFormat: QrPayloadFormat;
  color: string;
  style: QrModuleStyle;
+ /** QR error-correction level; higher survives more damage but densifies the symbol. */
+ ecLevel: QrEcLevel;
  size: QrExportSize;
 }
 
@@ -25,6 +29,7 @@ export const DEFAULT_SETTINGS: StudioSettings = {
  payloadFormat: "vcard",
  color: DEFAULT_QR_COLOR,
  style: DEFAULT_QR_STYLE,
+ ecLevel: "M",
  size: DEFAULT_QR_SIZE,
 };
 
@@ -46,9 +51,12 @@ export function sanitizeSettings(raw: unknown, fallback: StudioSettings = DEFAUL
  const style = QR_MODULE_STYLES.includes(raw.style as QrModuleStyle)
  ? (raw.style as QrModuleStyle)
  : fallback.style;
+ const ecLevel = QR_EC_LEVELS.includes(raw.ecLevel as QrEcLevel)
+ ? (raw.ecLevel as QrEcLevel)
+ : fallback.ecLevel;
  const size = QR_EXPORT_SIZES.includes(raw.size as QrExportSize)
  ? (raw.size as QrExportSize)
  : fallback.size;
 
- return { mode, payloadFormat, color, style, size };
+ return { mode, payloadFormat, color, style, ecLevel, size };
 }

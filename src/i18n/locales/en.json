@@ -205,6 +205,9 @@
  "printSheetFailed": "The print sheet could not be created. Try again.",
  "htmlCard": "Export web card",
  "htmlCardReady": "Web card exported (a single file, opens offline).",
+ "htmlCardSave": "Save to contacts (.vcf)",
+ "htmlCardDetails": "View the vCard text (copy manually if the download is blocked)",
+ "htmlCardFooter": "Smart VCard · Generated locally · No tracking",
  "styleLabel": "Module style",
  "styles": {
  "square": "Square",

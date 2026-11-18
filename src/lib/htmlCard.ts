@@ -15,6 +15,8 @@ export interface CardHtmlOptions {
 	data: VCardData;
 	/** The complete vCard text (CRLF, folded) embedded as the download payload. */
 	vcard: string;
+	/** UI strings follow the exporter's locale; defaults keep English for tests. */
+	strings?: { save: string; detailsSummary: string; footer: string };
 }
 
 function escapeHtml(value: string): string {
@@ -38,7 +40,8 @@ function base64Utf8(text: string): string {
 }
 
 /** Compose the standalone web-card document. */
-export function buildSelfContainedCardHtml({ qrSvg, data, vcard }: CardHtmlOptions): string {
+export function buildSelfContainedCardHtml({ qrSvg, data, vcard, strings }: CardHtmlOptions): string {
+	const ui = { save: "Save to contacts (.vcf)", detailsSummary: "View the vCard text (copy manually if the download is blocked)", footer: "Smart VCard · Generated locally · No tracking", ...strings };
 	const name = escapeHtml(formatFullName(data) || "Smart VCard");
 	const org = escapeHtml([data.organization, data.title].filter(Boolean).map(String).join(" · "));
 	const contacts = [
@@ -103,13 +106,13 @@ export function buildSelfContainedCardHtml({ qrSvg, data, vcard }: CardHtmlOptio
       <div class="qr">${qrSvg}</div>
     </div>
     <div class="actions">
-      <a class="save" download="${fileBase}.vcf" href="data:text/vcard;charset=utf-8;base64,${vcardBase64}">Save to contacts (.vcf)</a>
+      <a class="save" download="${fileBase}.vcf" href="data:text/vcard;charset=utf-8;base64,${vcardBase64}">${escapeHtml(ui.save)}</a>
       <details>
-        <summary>View the vCard text (copy manually if the download is blocked)</summary>
+        <summary>${escapeHtml(ui.detailsSummary)}</summary>
         <pre>${escapeHtml(vcard)}</pre>
       </details>
     </div>
-    <p class="foot">Smart VCard · Generated locally · No tracking</p>
+    <p class="foot">${escapeHtml(ui.footer)}</p>
   </main>
 </body>
 </html>`;

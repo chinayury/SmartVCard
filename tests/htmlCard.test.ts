@@ -63,3 +63,16 @@ test("the download filename carries the card name", () => {
 	assert.ok(/download="[^"]+\.vcf"/.test(html), "a .vcf download attribute exists");
 	assert.ok(html.includes("林志远"), "the card name is rendered");
 });
+
+test("UI strings follow the exporter's locale and are escaped", () => {
+	const html = buildSelfContainedCardHtml({
+		qrSvg: QR_SVG,
+		data: DATA,
+		vcard: VCARD,
+		strings: { save: "保存到通讯录 (.vcf)", detailsSummary: "查看 vCard 文本", footer: "Smart VCard · 本地生成 · 无追踪" },
+	});
+	assert.ok(html.includes("保存到通讯录 (.vcf)"));
+	assert.ok(html.includes("查看 vCard 文本"));
+	assert.ok(html.includes("本地生成 · 无追踪"));
+	assert.ok(!html.includes("Save to contacts"), "English defaults are replaced when strings are given");
+});

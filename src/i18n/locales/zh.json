@@ -205,6 +205,9 @@
  "printSheetFailed": "打印页生成失败，请重试。",
  "htmlCard": "导出网页名片",
  "htmlCardReady": "网页名片已导出（单文件，可离线打开）。",
+ "htmlCardSave": "保存到通讯录 (.vcf)",
+ "htmlCardDetails": "查看 vCard 文本（下载被拦截时可手动复制）",
+ "htmlCardFooter": "Smart VCard · 本地生成 · 无追踪",
  "styleLabel": "模块样式",
  "styles": {
  "square": "方块",

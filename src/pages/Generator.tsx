@@ -354,7 +354,16 @@ export function Generator() {
  if (!payload) return;
  try {
  downloadText(
- buildSelfContainedCardHtml({ qrSvg: renderQrSvg(payload, qrOptions), data: vcardData, vcard: vcardString }),
+ buildSelfContainedCardHtml({
+ qrSvg: renderQrSvg(payload, qrOptions),
+ data: vcardData,
+ vcard: vcardString,
+ strings: {
+ save: t("preview.htmlCardSave"),
+ detailsSummary: t("preview.htmlCardDetails"),
+ footer: t("preview.htmlCardFooter"),
+ },
+ }),
  `${fileBase}-card.html`,
  "text/html;charset=utf-8",
  );

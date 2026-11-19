@@ -48,6 +48,31 @@ test("exports nickname, birthday, logo and social profiles", () => {
  assert.ok(out.includes("X-SOCIALPROFILE;TYPE=wechat:wxid_a"));
 });
 
+test("the PGP public key travels as X-SMARTVCARD-PGP and survives folding", () => {
+ const armour = [
+ "-----BEGIN PGP PUBLIC KEY BLOCK-----",
+ "mQINBGfZ".repeat(30),
+ "-----END PGP PUBLIC KEY BLOCK-----",
+ ].join("\n");
+ const out = createVCard({ firstName: "A", pgpPublicKey: armour });
+ assert.ok(out.includes("X-SMARTVCARD-PGP:"), "the property exists");
+ // Long armour lines are folded at 75 octets; unfolding reassembles the value
+ // with its newlines escaped as literal \n (vCard 3.0 escaping).
+ const folded = out
+ .split("\r\n")
+ .filter((line) => line.startsWith("X-SMARTVCARD-PGP:") || line.startsWith(" "))
+ .map((line) => (line.startsWith(" ") ? line.slice(1) : line))
+ .join("");
+ assert.ok(folded.includes("-----BEGIN PGP PUBLIC KEY BLOCK-----"));
+ assert.ok(folded.includes("-----END PGP PUBLIC KEY BLOCK-----"));
+ assert.ok(folded.includes("\\n"), "newlines are vCard-escaped inside the value");
+ // The escaped value still occupies exactly one physical property line.
+ assert.equal(
+ out.split("\r\n").filter((line) => line.startsWith("X-SMARTVCARD-PGP:")).length,
+ 1,
+ );
+});
+
 test("never exports base64 uploads or non-http image sources", () => {
  const out = createVCard({
  firstName: "A",

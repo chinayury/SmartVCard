@@ -236,6 +236,9 @@ export function parseVCard(text: string): ParsedVCard | null {
     case "X-SMARTVCARD-SLOGAN":
       take("slogan", value);
       break;
+    case "X-SMARTVCARD-PGP":
+      take("pgpPublicKey", value);
+      break;
  case "X-WECHAT":
  take("wechat", value);
  break;

@@ -50,5 +50,8 @@ export interface VCardData {
  note?: string;
  photo?: Photo;
 
+ /** ASCII-armoured OpenPGP public key, carried as X-SMARTVCARD-PGP. */
+ pgpPublicKey?: string;
+
  socialUrls?: SocialUrls;
 }

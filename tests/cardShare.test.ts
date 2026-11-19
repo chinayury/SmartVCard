@@ -173,3 +173,12 @@ test("plain and legacy paths are unaffected by the password branch", async () =>
 	const legacy = base64UrlEncode(JSON.stringify({ firstName: "旧链接" }));
 	assert.equal((await decodeSharePayload(legacy))?.firstName, "旧链接");
 });
+
+test("the PGP public key never enters a share payload", async () => {
+	const withKey = { ...SAMPLE, pgpPublicKey: "-----BEGIN PGP PUBLIC KEY BLOCK-----" };
+	const encoded = await encodeSharePayload(withKey);
+	assert.ok(!encoded.includes("PGP"), "armour text must not ride the link");
+	const decoded = await decodeSharePayload(encoded);
+	assert.ok(decoded);
+	assert.equal(decoded.pgpPublicKey, "");
+});

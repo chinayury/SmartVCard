@@ -58,6 +58,8 @@ test("length caps are enforced", () => {
  assert.equal(vcardSchema.safeParse({ firstName: "A".repeat(61) }).success, false);
  assert.equal(vcardSchema.safeParse({ firstName: "A", note: "x".repeat(1001) }).success, false);
  assert.equal(vcardSchema.safeParse({ firstName: "A", organization: "x".repeat(121) }).success, false);
+ assert.equal(vcardSchema.safeParse({ firstName: "A", pgpPublicKey: "x".repeat(4001) }).success, false);
+ assert.equal(vcardSchema.safeParse({ firstName: "A", pgpPublicKey: "x".repeat(4000) }).success, true);
 });
 
 test("empty strings pass optional validators", () => {

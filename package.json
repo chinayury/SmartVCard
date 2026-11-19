@@ -1,7 +1,7 @@
 {
   "name": "smart-vcard",
   "private": true,
-  "version": "0.7.2",
+  "version": "0.8.0",
   "type": "module",
   "description": "Smart VCard — a privacy-first, bilingual vCard QR code studio that runs entirely in the browser.",
   "license": "AGPL-3.0-or-later",

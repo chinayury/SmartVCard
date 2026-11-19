@@ -152,6 +152,8 @@
  "wechat": "WeChat ID",
  "note": "Note",
  "noteHint": "Up to 1000 characters; long notes are folded correctly in the .vcf",
+ "pgpPublicKey": "PGP public key",
+ "pgpPublicKeyHint": "Paste an ASCII-armoured OpenPGP public key (.vcf only; never in QR codes or share links)",
  "submit": "Save & proof",
  "submitHint": "Saving only writes a draft to this browser. Nothing is uploaded.",
  "savedToast": "Proof saved to this browser.",

@@ -34,7 +34,7 @@ import type { VCardData } from "./vcardTypes";
 const URL_FIELDS = ["url", "workUrl", "photo", "linkedIn", "twitter"] as const;
 
 const SHAREABLE_KEYS = (Object.keys(emptyVCard) as (keyof VCardFormValues)[]).filter(
-	(key) => key !== "logoUrl",
+	(key) => key !== "logoUrl" && key !== "pgpPublicKey",
 );
 
 export class SharePayloadError extends Error {

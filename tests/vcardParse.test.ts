@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
+import { createVCard } from "../src/lib/vcard.ts";
 import { parseVCard } from "../src/lib/vcardParse.ts";
 
 const VCARD = [
@@ -124,4 +125,32 @@ test("CELL+WORK together stays personal, WORK alone is the work slot", () => {
  assert.ok(parsed);
  assert.equal(parsed.values.cellPhone, "+8613900000000");
  assert.equal(parsed.values.workPhone, "01062562288");
+});
+
+test("X-SMARTVCARD-PGP restores the public key, folded and escaped", () => {
+ const armour = [
+ "-----BEGIN PGP PUBLIC KEY BLOCK-----",
+ "mQINBGfZ".repeat(6),
+ "-----END PGP PUBLIC KEY BLOCK-----",
+ ].join("\n");
+ // Writer contract: the armoured key goes out folded at 75 octets with the
+ // newlines vCard-escaped; the parser must reassemble the exact value.
+ const written = [
+ "BEGIN:VCARD",
+ "VERSION:3.0",
+ "N:;A;;;",
+ "X-SMARTVCARD-PGP:-----BEGIN PGP PUBLIC KEY BLOCK-----\\nmQINBGfZmQINBGfZmQINBGfZmQINBGfZmQINBGfZ",
+ " mQINBGfZmQINBGfZmQINBGfZmQINBGfZmQINBGfZmQINBGfZmQINBGfZmQINBGfZ",
+ " \\n-----END PGP PUBLIC KEY BLOCK-----",
+ "END:VCARD",
+ ].join("\n");
+ const parsed = parseVCard(written);
+ assert.ok(parsed);
+ assert.ok(parsed.values.pgpPublicKey?.startsWith("-----BEGIN PGP PUBLIC KEY BLOCK-----"));
+ assert.ok(parsed.values.pgpPublicKey?.endsWith("-----END PGP PUBLIC KEY BLOCK-----"));
+ assert.ok(!parsed.values.pgpPublicKey?.includes("\r"), "unfolding leaves no CR artifacts");
+ // And the real writer→parser round trip restores the armour exactly.
+ const roundTrip = parseVCard(createVCard({ firstName: "A", pgpPublicKey: armour }));
+ assert.ok(roundTrip);
+ assert.equal(roundTrip.values.pgpPublicKey, armour);
 });

@@ -707,6 +707,18 @@ export function Generator() {
  <Field values={values} id="note" label={t("form.note")} optionalLabel={t("form.optional")} hint={t("form.noteHint")} error={errorFor("note")}>
  {(control) => <textarea {...control} {...register("note")} rows={3} className="field field--area" />}
  </Field>
+
+ <Field values={values} id="pgpPublicKey" label={t("form.pgpPublicKey")} optionalLabel={t("form.optional")} hint={t("form.pgpPublicKeyHint")} error={errorFor("pgpPublicKey")}>
+ {(control) => (
+ <textarea
+ {...control}
+ {...register("pgpPublicKey")}
+ rows={3}
+ spellCheck={false}
+ className="field field--area font-mono text-[11px]"
+ />
+ )}
+ </Field>
  </FieldGroup>
 
  <div className="flex flex-wrap items-center gap-3 border-t border-line pt-5">

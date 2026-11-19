@@ -152,6 +152,8 @@
  "wechat": "微信号",
  "note": "备注",
  "noteHint": "最多 1000 字；超长备注会在 .vcf 中按规范折行",
+ "pgpPublicKey": "PGP 公钥",
+ "pgpPublicKeyHint": "粘贴 ASCII 装甲的 OpenPGP 公钥（仅导出到 .vcf；不进二维码与分享链接）",
  "submit": "保存并校样",
  "submitHint": "保存只会写入本机浏览器，不会上传。",
  "savedToast": "校样已保存在本机浏览器。",

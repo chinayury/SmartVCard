@@ -96,6 +96,10 @@ function buildVCardLines(data: VCardData): string[] {
  lines.push(`X-SMARTVCARD-SHORTNAME:${esc(data.companyShortName)}`);
  }
  if (data.slogan) lines.push(`X-SMARTVCARD-SLOGAN:${esc(data.slogan)}`);
+ // ASCII-armoured OpenPGP public key: an X- property keeps the plain-text
+ // armour intact (a standard KEY: property would demand base64 re-encoding),
+ // and unknown X- properties are ignored by other contacts apps.
+ if (data.pgpPublicKey) lines.push(`X-SMARTVCARD-PGP:${esc(data.pgpPublicKey)}`);
 
  const social = data.socialUrls ?? {};
  for (const [key, value] of Object.entries(social)) {

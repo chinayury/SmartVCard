@@ -57,6 +57,7 @@ const LIMITS = {
   birthday: 10,
   note: 1000,
   photo: 2048,
+  pgpPublicKey: 4000,
 
   // Social
   linkedIn: 2048,
@@ -142,6 +143,7 @@ export const vcardSchema = z.object({
   birthday: optionalDate,
   note: optionalText(LIMITS.note),
   photo: optionalHttpUrl(LIMITS.photo),
+  pgpPublicKey: optionalText(LIMITS.pgpPublicKey),
 
   // Social
   linkedIn: optionalHttpUrl(LIMITS.linkedIn),
@@ -209,6 +211,7 @@ export function toVCardData(values: VCardFormValues): VCardData {
  birthday: text(values.birthday),
  note: text(values.note),
  photo: text(values.photo) ? { url: text(values.photo) as string } : undefined,
+ pgpPublicKey: text(values.pgpPublicKey),
 
  socialUrls: {
  linkedIn: text(values.linkedIn),
@@ -245,6 +248,7 @@ export const emptyVCard: VCardFormValues = {
  birthday: "",
  note: "",
  photo: "",
+ pgpPublicKey: "",
  linkedIn: "",
  twitter: "",
  wechat: "",

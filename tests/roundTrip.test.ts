@@ -48,6 +48,8 @@ const FULL: VCardFormValues = {
   linkedIn: "https://linkedin.com/in/lin",
   twitter: "https://x.com/lin",
   wechat: "lin_zhiyuan",
+  pgpPublicKey:
+    "-----BEGIN PGP PUBLIC KEY BLOCK-----\nmQINBGfZ…line,with;separators\\backslash\n-----END PGP PUBLIC KEY BLOCK-----",
 };
 
 

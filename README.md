@@ -175,7 +175,7 @@ smart-vcard/
 | 命令 | 用途 |
 |---|---|
 | `npm run dev` | 启动开发服务 |
-| `npm test` | 运行全部测试（145 项） |
+| `npm test` | 运行全部测试（145 项，内存受限时加 `--test-concurrency=1`） |
 | `npm run test:watch` | 监听模式跑测试 |
 | `npm run lint` | ESLint 静态检查 |
 | `npm run typecheck` | TypeScript 类型检查 |

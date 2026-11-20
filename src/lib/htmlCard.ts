@@ -1,4 +1,4 @@
-import { formatFullName } from "./text";
+import { formatAddressLine, formatFullName, hasCJK } from "./text";
 import type { VCardData } from "./vcardTypes";
 
 /**
@@ -44,14 +44,16 @@ export function buildSelfContainedCardHtml({ qrSvg, data, vcard, strings }: Card
 	const ui = { save: "Save to contacts (.vcf)", detailsSummary: "View the vCard text (copy manually if the download is blocked)", footer: "Smart VCard · Generated locally · No tracking", ...strings };
 	const name = escapeHtml(formatFullName(data) || "Smart VCard");
 	const org = escapeHtml([data.organization, data.title].filter(Boolean).map(String).join(" · "));
-	const contacts = [
-		{ label: "TEL", value: data.cellPhone || data.workPhone || "" },
-		{ label: "MAIL", value: data.email || data.workEmail || "" },
-		{ label: "WEB", value: (data.url || data.workUrl || "").replace(/^https?:\/\//i, "") },
-	]
-		.filter((row) => row.value)
-		.map((row) => `<p class="line"><span class="tag">${row.label}</span>${escapeHtml(row.value)}</p>`)
-		.join("");
+ const contacts = [
+ { label: "TEL", value: data.cellPhone || data.workPhone || "" },
+ { label: "MAIL", value: data.email || data.workEmail || "" },
+ { label: "WEB", value: (data.url || data.workUrl || "").replace(/^https?:\/\//i, "") },
+ ]
+ .filter((row) => row.value)
+ .map((row) => `<p class="line"><span class="tag">${row.label}</span>${escapeHtml(row.value)}</p>`)
+ .join("");
+ // Address ordering follows the name's script, matching the card preview.
+ const addressLine = formatAddressLine(data.workAddress, hasCJK(formatFullName(data)));
 	const slogan = escapeHtml(data.slogan || "");
 	const vcardBase64 = base64Utf8(vcard);
 	const fileBase = escapeHtml(formatFullName(data) || "contact");
@@ -75,6 +77,7 @@ export function buildSelfContainedCardHtml({ qrSvg, data, vcard, strings }: Card
   .name { margin-top: 26px; text-align: center; font-size: 30px; font-weight: 700; letter-spacing: -0.01em; }
   .contacts { margin-top: 18px; display: grid; gap: 8px; }
   .line { font-size: 12.5px; color: #3d4a63; word-break: break-all; }
+  .addr { margin-top: 8px; font-size: 12.5px; color: #6d7890; }
   .tag { display: inline-block; min-width: 38px; margin-right: 10px; padding: 1px 6px; text-align: center;
     border: 1px solid #e2e7f0; border-radius: 6px; background: #f4f6fa; font-family: ui-monospace, monospace;
     font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: #6d7890; }
@@ -101,6 +104,7 @@ export function buildSelfContainedCardHtml({ qrSvg, data, vcard, strings }: Card
     </div>
     <h1 class="name">${name}</h1>
     <div class="contacts">${contacts}</div>
+    ${addressLine ? `<p class="addr">${escapeHtml(addressLine)}</p>` : ""}
     <div class="qrrow">
       <p class="slogan">${slogan}</p>
       <div class="qr">${qrSvg}</div>

@@ -64,6 +64,31 @@ test("the download filename carries the card name", () => {
 	assert.ok(html.includes("林志远"), "the card name is rendered");
 });
 
+test("a complete address rides the web card; a partial or absent one does not", () => {
+	const withAddress = toVCardData({
+		...emptyVCard,
+		firstName: "志远",
+		lastName: "林",
+		workStreet: "武康路320号",
+		workCity: "上海",
+		workCountry: "中国",
+	});
+	const html = buildSelfContainedCardHtml({ qrSvg: QR_SVG, data: withAddress, vcard: VCARD });
+	assert.ok(html.includes('class="addr"'), "address line exists");
+	assert.ok(html.includes("武康路320号"));
+	const bare = toVCardData({ ...emptyVCard, firstName: "志远" });
+	const bareHtml = buildSelfContainedCardHtml({ qrSvg: QR_SVG, data: bare, vcard: VCARD });
+	assert.ok(!bareHtml.includes('class="addr"'), "no address row without an address");
+	const hostile = toVCardData({
+		...emptyVCard,
+		firstName: "志远",
+		workStreet: "<script>",
+		workCity: "上海",
+	});
+	const hostileHtml = buildSelfContainedCardHtml({ qrSvg: QR_SVG, data: hostile, vcard: VCARD });
+	assert.ok(!hostileHtml.includes("<script>"), "address content is escaped");
+});
+
 test("UI strings follow the exporter's locale and are escaped", () => {
 	const html = buildSelfContainedCardHtml({
 		qrSvg: QR_SVG,

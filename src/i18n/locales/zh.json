@@ -288,6 +288,20 @@
  "tagline": "扫一次，常联系。",
  "revealContacts": "显示联系方式"
  },
+ "library": {
+ "overline": "名片库",
+ "title": "已保存的名片",
+ "description": "整张名片（含 Logo）的快照。载入会覆盖当前表单；库上限 20 张。",
+ "empty": "名片库还是空的——先在工坊页点「存入名片库」。",
+ "save": "存入名片库",
+ "saved": "已存入名片库：{{label}}",
+ "saveFailed": "名片库写入失败（存储空间不足？）。",
+ "open": "名片库 ({{count}})",
+ "load": "载入",
+ "loaded": "已载入：{{label}}",
+ "delete": "删除快照",
+ "deleted": "快照已删除。"
+ },
  "share": {
  "overline": "分享名片",
  "pageTitle": "有人给你发来一张名片",

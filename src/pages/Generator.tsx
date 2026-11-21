@@ -7,6 +7,7 @@ import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Field, FieldGroup } from "../components/Field";
 import { Icon } from "../components/Icon";
 import { ImportDialog } from "../components/ImportDialog";
+import LibraryDialog from "../components/LibraryDialog";
 import { DeliveryControls, SpecimenPanel } from "../components/generator/DeliveryPanel";
 import { useDocumentHead } from "../hooks/useDocumentHead";
 import { useLocalStorage } from "../hooks/useLocalStorage";
@@ -22,6 +23,7 @@ import { isSafeImageSource } from "../lib/safety";
 import { buildCardSheetHtml, printCardSheet } from "../lib/printSheet";
 import { buildSelfContainedCardHtml } from "../lib/htmlCard";
 import { createMeCard } from "../lib/mecard";
+import { makeEntryId, makeEntryLabel, readLibrary, upsertEntry, writeLibrary, type LibraryEntry } from "../lib/cardLibrary";
 import {
  countFilledFields,
  emptyVCard,
@@ -72,6 +74,8 @@ export function Generator() {
  const [resetOpen, setResetOpen] = useState(false);
  const [importOpen, setImportOpen] = useState(false);
  const [backupOpen, setBackupOpen] = useState(false);
+ const [libraryOpen, setLibraryOpen] = useState(false);
+ const [library, setLibrary] = useState<LibraryEntry[]>(() => readLibrary());
  const [exporting, setExporting] = useState(false);
  const logoFileRef = useRef<HTMLInputElement>(null);
  const logoMigrated = useRef(false);
@@ -242,6 +246,38 @@ export function Generator() {
  setSettings(payload.settings);
  setSavedAt(Date.now());
  toast.push(t("form.backupImported"));
+ };
+
+ // The card library: named snapshots of the whole card, independent from the
+ // auto-save pipeline. Saving never touches the live draft keys.
+ const handleSaveToLibrary = () => {
+ const entry: LibraryEntry = {
+ id: makeEntryId(),
+ savedAt: Date.now(),
+ label: makeEntryLabel(values),
+ draft: mergeWithDefaults({ ...values, logoUrl: "" }),
+ logo,
+ };
+ const next = upsertEntry(library, entry);
+ setLibrary(next);
+ const persisted = writeLibrary(next);
+ toast.push(persisted ? t("library.saved", { label: entry.label }) : t("library.saveFailed"));
+ };
+
+ const handleLoadEntry = (loaded: LibraryEntry) => {
+ reset(loaded.draft);
+ setDraft(loaded.draft);
+ setLogo(loaded.logo);
+ setValue("logoUrl", loaded.logo, { shouldDirty: false, shouldValidate: true });
+ setSavedAt(Date.now());
+ toast.push(t("library.loaded", { label: loaded.label }));
+ };
+
+ const handleDeleteEntry = (id: string) => {
+ const next = library.filter((item) => item.id !== id);
+ setLibrary(next);
+ writeLibrary(next);
+ toast.push(t("library.deleted"));
  };
 
  const handleLogoFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -453,6 +489,14 @@ export function Generator() {
  <button type="button" className="btn btn--outline btn--sm" onClick={() => backupFileRef.current?.click()}>
  <Icon name="upload" className="h-3.5 w-3.5" />
  {t("form.importBackup")}
+ </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={handleSaveToLibrary}>
+ <Icon name="card" className="h-3.5 w-3.5" />
+ {t("library.save")}
+ </button>
+ <button type="button" className="btn btn--outline btn--sm" onClick={() => setLibraryOpen(true)}>
+ <Icon name="card" className="h-3.5 w-3.5" />
+ {t("library.open", { count: library.length })}
  </button>
  <button type="button" className="btn btn--ghost btn--sm" onClick={() => setResetOpen(true)}>
  <Icon name="reset" className="h-3.5 w-3.5" />
@@ -805,6 +849,14 @@ export function Generator() {
  setBackupOpen(false);
  backupPendingRef.current = null;
  }}
+ />
+
+ <LibraryDialog
+ open={libraryOpen}
+ entries={library}
+ onLoad={handleLoadEntry}
+ onDelete={handleDeleteEntry}
+ onClose={() => setLibraryOpen(false)}
  />
  </div>
  );

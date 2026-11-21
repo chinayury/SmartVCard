@@ -288,6 +288,20 @@
  "tagline": "Scan once, keep in touch.",
  "revealContacts": "Show contact details"
  },
+ "library": {
+ "overline": "Card library",
+ "title": "Saved cards",
+ "description": "Snapshots of a whole card (logo included). Loading replaces the current form; up to 20 entries.",
+ "empty": "The library is empty — press “Save to library” above first.",
+ "save": "Save to library",
+ "saved": "Saved to library: {{label}}",
+ "saveFailed": "Could not write the library (out of storage?).",
+ "open": "Card library ({{count}})",
+ "load": "Load",
+ "loaded": "Loaded: {{label}}",
+ "delete": "Delete snapshot",
+ "deleted": "Snapshot deleted."
+ },
  "share": {
  "overline": "Shared card",
  "pageTitle": "A card sent to you",

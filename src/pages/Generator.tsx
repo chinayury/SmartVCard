@@ -204,11 +204,15 @@ export function Generator() {
  toast.push(t("form.resetToast"));
  };
 
- // Backup: everything the app persists about this card — draft, logo and QR
- // settings — as one versioned JSON file; restore goes through the same
- // sanitising pipeline as the storage keys themselves.
+ // Backup: everything the app persists — the active card, the card library
+ // and the QR settings — as one versioned JSON file; restore runs through the
+ // same sanitising pipeline as the storage keys themselves.
  const handleExportBackup = () => {
- downloadText(buildBackupFile(values, logo, settings), backupFilename(), "application/json;charset=utf-8");
+ downloadText(
+ buildBackupFile(values, logo, settings, library),
+ backupFilename(),
+ "application/json;charset=utf-8",
+ );
  toast.push(t("form.backupExported"));
  };
 
@@ -244,6 +248,12 @@ export function Generator() {
  setLogo(payload.logo);
  setValue("logoUrl", payload.logo, { shouldDirty: false, shouldValidate: true });
  setSettings(payload.settings);
+ // The library comes back through the same sanitiser; an empty array from a
+ // version-1 file simply keeps whatever is currently saved untouched.
+ if (payload.library.length > 0) {
+ setLibrary(payload.library);
+ writeLibrary(payload.library);
+ }
  setSavedAt(Date.now());
  toast.push(t("form.backupImported"));
  };

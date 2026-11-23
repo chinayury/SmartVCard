@@ -23,7 +23,7 @@ import { isSafeImageSource } from "../lib/safety";
 import { buildCardSheetHtml, printCardSheet } from "../lib/printSheet";
 import { buildSelfContainedCardHtml } from "../lib/htmlCard";
 import { createMeCard } from "../lib/mecard";
-import { makeEntryId, makeEntryLabel, readLibrary, upsertEntry, writeLibrary, type LibraryEntry } from "../lib/cardLibrary";
+import { makeEntryId, makeEntryLabel, readLibrary, renameEntry, upsertEntry, writeLibrary, type LibraryEntry } from "../lib/cardLibrary";
 import {
  countFilledFields,
  emptyVCard,
@@ -288,6 +288,12 @@ export function Generator() {
  setLibrary(next);
  writeLibrary(next);
  toast.push(t("library.deleted"));
+ };
+
+ const handleRenameEntry = (id: string, label: string) => {
+ const next = renameEntry(library, id, label);
+ setLibrary(next);
+ writeLibrary(next);
  };
 
  const handleLogoFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -865,6 +871,7 @@ export function Generator() {
  open={libraryOpen}
  entries={library}
  onLoad={handleLoadEntry}
+ onRename={handleRenameEntry}
  onDelete={handleDeleteEntry}
  onClose={() => setLibraryOpen(false)}
  />

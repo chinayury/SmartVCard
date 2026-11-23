@@ -299,6 +299,8 @@
  "open": "名片库 ({{count}})",
  "load": "载入",
  "loaded": "已载入：{{label}}",
+ "rename": "重命名",
+ "renameSave": "保存",
  "delete": "删除快照",
  "deleted": "快照已删除。"
  },

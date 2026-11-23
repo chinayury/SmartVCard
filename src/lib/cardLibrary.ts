@@ -54,6 +54,14 @@ export function removeEntry(entries: LibraryEntry[], id: string): LibraryEntry[]
 	return entries.filter((item) => item.id !== id);
 }
 
+/** Rename an entry; an empty label falls back to the placeholder. */
+export function renameEntry(entries: LibraryEntry[], id: string, label: string): LibraryEntry[] {
+	const trimmed = label.trim().slice(0, 120);
+	return entries.map((item) =>
+		item.id === id ? { ...item, label: trimmed || "未命名名片" } : item,
+	);
+}
+
 /** Sanitise anything read from localStorage into a safe entry list. */
 export function sanitizeLibrary(raw: unknown): LibraryEntry[] {
 	if (!Array.isArray(raw)) return [];

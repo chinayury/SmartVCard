@@ -299,6 +299,8 @@
  "open": "Card library ({{count}})",
  "load": "Load",
  "loaded": "Loaded: {{label}}",
+ "rename": "Rename",
+ "renameSave": "Save",
  "delete": "Delete snapshot",
  "deleted": "Snapshot deleted."
  },

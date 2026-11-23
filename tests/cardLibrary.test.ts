@@ -7,6 +7,7 @@ import {
 	makeEntryLabel,
 	readLibrary,
 	removeEntry,
+	renameEntry,
 	sanitizeLibrary,
 	upsertEntry,
 	type LibraryEntry,
@@ -58,6 +59,18 @@ test("removeEntry drops only the matching id", () => {
 	assert.equal(next.length, 1);
 	assert.equal(next[0].label, "乙");
 	assert.equal(removeEntry(next, "missing").length, 1);
+});
+
+test("renameEntry renames, trims, caps and falls back for empty labels", () => {
+	const list = [entry({ id: "c_1", label: "旧名" }), entry({ id: "c_2", label: "保持" })];
+	const renamed = renameEntry(list, "c_1", "  新名  ");
+	assert.equal(renamed[0].label, "新名");
+	assert.equal(renamed[1].label, "保持", "other entries untouched");
+	const empty = renameEntry(list, "c_1", "   ");
+	assert.equal(empty[0].label, "未命名名片", "blank label falls back");
+	const capped = renameEntry(list, "c_1", "长".repeat(500));
+	assert.equal(capped[0].label.length, 120);
+	assert.equal(renameEntry(list, "missing", "x")[0].label, "旧名", "unknown id is a no-op");
 });
 
 test("sanitizeLibrary strips junk, dedupes, caps and sanitises drafts", () => {

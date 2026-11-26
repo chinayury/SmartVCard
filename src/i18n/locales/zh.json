@@ -379,7 +379,7 @@
  "privacy": "远程图片以 URI 引用导出；上传的 Logo 不会进入分享链接。"
  },
  "creditsTitle": "致谢与许可",
- "creditsBody": "最初分支自 farellukas/vcard-generator。本次发布重写了写入器、名片版式、工坊界面与双语文案。",
+ "creditsBody": "本次发布重写了写入器、名片版式、工坊界面与双语文案。",
  "licenseBody": "以 GNU AGPL v3.0 或更高版本（AGPL-3.0-or-later）发布；若修改后通过网络向公众提供服务，须向使用者提供修改后的完整源代码。二维码由 qrcode 生成，图标为本项目绘制。"
  },
  "notFound": {

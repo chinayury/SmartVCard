@@ -97,6 +97,8 @@ export function Generator() {
  });
 
  const values = watch();
+ const libraryLabel = makeEntryLabel(values);
+ const updatesLibraryEntry = library.some((entry) => entry.label === libraryLabel);
  // Stable identity for effects: `watch()` returns a new object every render,
  // but this string only changes when a field actually changes.
  const valuesJson = JSON.stringify({ ...values, logoUrl: "" });
@@ -264,7 +266,7 @@ export function Generator() {
  const entry: LibraryEntry = {
  id: makeEntryId(),
  savedAt: Date.now(),
- label: makeEntryLabel(values),
+ label: libraryLabel,
  draft: mergeWithDefaults({ ...values, logoUrl: "" }),
  logo,
  };
@@ -508,7 +510,7 @@ export function Generator() {
  </button>
  <button type="button" className="btn btn--outline btn--sm" onClick={handleSaveToLibrary}>
  <Icon name="card" className="h-3.5 w-3.5" />
- {t("library.save")}
+ {updatesLibraryEntry ? t("library.update", { label: libraryLabel }) : t("library.save")}
  </button>
  <button type="button" className="btn btn--outline btn--sm" onClick={() => setLibraryOpen(true)}>
  <Icon name="card" className="h-3.5 w-3.5" />

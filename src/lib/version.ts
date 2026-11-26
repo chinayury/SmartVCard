@@ -1,5 +1,6 @@
-/** Single source of truth for the shipped application version. */
-export const APP_VERSION = "0.10.2";
+import { version } from "../../package.json";
+
+export const APP_VERSION = version;
 
 /** Shown in the footer / about page next to the version. */
 export const APP_EDITION = "Indigo Grid Edition";

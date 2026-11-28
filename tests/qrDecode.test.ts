@@ -13,7 +13,7 @@ import { emptyVCard, toVCardData, type VCardFormValues } from "../src/lib/schema
  * defect where a single accented character produced no QR at all; only a
  * decode-level assertion catches that class of bug.
  *
- * The app emits geometry-only SVG (rects, circles, single-module paths), so
+ * The app emits geometry-only SVG (rects, circles, and horizontal runs), so
  * this file carries a small deterministic rasteriser for exactly that shape
  * vocabulary — no canvas dependency, same pixels a browser would paint.
  *
@@ -122,9 +122,10 @@ function rasterizeSvg(svg: string): Raster {
  } else if (tag === "circle") {
  paintDisc(raster, Number(attrs.cx), Number(attrs.cy), Number(attrs.r), fill);
  } else if (tag === "path" && selfClosed === "/") {
- // The square style emits one path per module: `M x y h1 v1 h-1 z`.
- for (const move of (attrs.d ?? "").matchAll(/M\s*(-?[\d.]+)[,\s](-?[\d.]+)/g)) {
- paintRect(raster, Number(move[1]), Number(move[2]), 1, 1, fill);
+ // Each closed subpath fills a one-module-high rectangle.
+ const runs = attrs.d.matchAll(/M([\d.]+) ([\d.]+)h(\d+)v1h-\3z/g);
+ for (const [, x, y, width] of runs) {
+ paintRect(raster, Number(x), Number(y), Number(width), 1, fill);
  }
  }
  }
@@ -195,6 +196,26 @@ for (const sample of SAMPLES) {
 }
 
 // The shipped SVG renderer, end to end, for the styles jsQR can read in Node.
+test("square SVG runs preserve every module and the quiet zone", () => {
+  const text = "BEGIN:VCARD\nVERSION:3.0\nFN:Jane Doe\nEND:VCARD";
+  const matrix = buildQrMatrix(text);
+  for (const margin of [0, 4, 8]) {
+    const svg = renderQrSvg(text, { style: "square", margin });
+    assert.match(svg, /h[2-9]\d*v1/, "adjacent dark modules share a subpath");
+    const raster = rasterizeSvg(svg);
+    const total = matrix.size + 2 * margin;
+    assert.equal(raster.width, total * SCALE);
+    for (let y = 0; y < total; y += 1) {
+      for (let x = 0; x < total; x += 1) {
+        const inside = x >= margin && y >= margin && x < total - margin && y < total - margin;
+        const expected = inside && matrix.isDark(x - margin, y - margin);
+        const pixel = (y * SCALE * raster.width + x * SCALE) * 4;
+        assert.equal(raster.data[pixel] < 128, expected, `cell (${x}, ${y}), margin ${margin}`);
+      }
+    }
+  }
+});
+
 for (const style of ["square", "rounded"] as const) {
  for (const sample of SAMPLES) {
  test(`decodes the rendered SVG byte-for-byte — ${sample.name} (${style})`, () => {

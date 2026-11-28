@@ -128,7 +128,12 @@ export function renderQrSvg(text: string, options: QrRenderOptions = {}): string
       const py = y + margin;
 
       if (style === "square") {
-        squarePath.push(["M", px, py, "h1", "v1", "h-1", "z"].join(" "));
+        const start = x;
+        while (x + 1 < matrix.size && matrix.isDark(x + 1, y) && !isFinderZone(x + 1, y, matrix.size)) {
+          x += 1;
+        }
+        const width = x - start + 1;
+        squarePath.push(`M${px} ${py}h${width}v1h-${width}z`);
       } else if (style === "rounded") {
         modules.push(`<rect x="${px}" y="${py}" width="1" height="1" rx="0.25"/>`);
       } else {
@@ -155,7 +160,7 @@ export function renderQrSvg(text: string, options: QrRenderOptions = {}): string
 
  const body =
  style === "square"
- ? `<path d="${squarePath.join(" ")}" fill="${color}"/>`
+ ? `<path d="${squarePath.join("")}" fill="${color}"/>`
  : `<g fill="${color}">${modules.join("")}</g>`;
 
  const rendering = style === "square" ? "crispEdges" : "geometricPrecision";
